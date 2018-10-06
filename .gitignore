@@ -1,1 +1,7 @@
 pingit_clone/pingit_clone/__pycache__/
+pingit_clone/pingit_clone/migrations/
+pingit_clone/__pycache__/
+pingit_clone/customers/__pycache__/
+pingit_clone/customers/migrations/
+pingit_clone/banking/__pycache__/
+pingit_clone/banking/migrations/
