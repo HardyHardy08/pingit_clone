@@ -3,37 +3,48 @@ from django.test import TestCase
 from customers.models import Customer, IdentificationType
 
 
+def valid_customer_data():
+    return {
+        'username': 'JohnDoe',
+        'first_name': 'John',
+        'last_name': 'Doe',
+        'email': 'johndoe@boongbank.com',
+        'contact_number': '08123123123',
+        'password': '123123123123',
+        'identification_type': IdentificationType.objects.get(
+            identification_description="KTP"),
+        'identification_number': '0123456789QWERTY'
+    }
+
+
+def invalid_customer_data():
+    return {
+        'username': 'JackDoe',
+        'first_name': 'Jack',
+        'last_name': 'Doe',
+        'email': 'thisisnotanemail',
+        'contact_number': '081321321321',
+        'password': '123123123123',
+        'identification_type': '',
+        'identification_number': ''
+    }
+
+
+def setup_IdentificationTypes():
+    IdentificationType.objects.create(identification_description="KTP")
+    IdentificationType.objects.create(identification_description="SIM")
+    IdentificationType.objects.create(identification_description="Paspor")
+
+
 class DefaultCustomerTest(TestCase):
     """
     Test default model manager functions for customer model
     """
 
     def setUp(self):
-        IdentificationType.objects.create(identification_description="KTP")
-        IdentificationType.objects.create(identification_description="SIM")
-        IdentificationType.objects.create(identification_description="Paspor")
-
-        self.valid_data = {
-            'username': 'JohnDoe',
-            'first_name': 'John',
-            'last_name': 'Doe',
-            'email': 'johndoe@boongbank.com',
-            'contact_number': '08123123123',
-            'password': '123123123123',
-            'identification_type': IdentificationType.objects.get(
-                identification_description="KTP"),
-            'identification_number': '0123456789QWERTY'
-        }
-        self.invalid_data = {
-            'username': 'JackDoe',
-            'first_name': 'Jack',
-            'last_name': 'Doe',
-            'email': 'thisisnotanemail',
-            'contact_number': '081321321321',
-            'password': '123123123123',
-            'identification_type': '',
-            'identification_number': ''
-        }
+        setup_IdentificationTypes()
+        self.valid_data = valid_customer_data()
+        self.invalid_data = invalid_customer_data()
 
     def test_valid_create_customer(self):
         new_customer = Customer.objects.create_user(**self.valid_data)
