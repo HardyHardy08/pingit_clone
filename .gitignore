@@ -5,3 +5,7 @@ pingit_clone/customers/__pycache__/
 pingit_clone/customers/migrations/
 pingit_clone/banking/__pycache__/
 pingit_clone/banking/migrations/
+pingit_clone/pingit/__pycache__/
+pingit_clone/pingit/migrations/
+pingit_clone/.coverage
+pingit_clone/htmlcov/
