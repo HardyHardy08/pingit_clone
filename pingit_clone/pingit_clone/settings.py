@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Our Apps
-    # 'banking.apps.BankingConfig',
+    'banking.apps.BankingConfig',
     'customers.apps.CustomersConfig',
     # 'pingit.apps.PingitConfig',
 ]
