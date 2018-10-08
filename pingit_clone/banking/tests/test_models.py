@@ -57,7 +57,7 @@ class DefaultTransactionTest(TestCase):
         self.assertIsInstance(new_transaction, Transaction)
 
     def test_invalid_create_transaction(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             Transaction.objects.create(**self.invalid_transaction)
 
     def test_valid_update_transaction(self):
@@ -73,7 +73,7 @@ class DefaultTransactionTest(TestCase):
     def test_invalid_update_transaction(self):
         transaction = Transaction.objects.create(**self.valid_transaction)
         transaction.transaction_amount = "one hundred"
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             transaction.save()
 
     def test_delete_transaction(self):
@@ -122,8 +122,8 @@ class DefaultAccountTest(TestCase):
 
     def test_invalid_update_account(self):
         account = Account.objects.create(**self.valid_account)
-        account.current_balance = "two hundred"
-        with self.assertRaises(ValueError):
+        account.current_balance = ""
+        with self.assertRaises(ValidationError):
             account.save()
 
     def test_delete_account(self):
