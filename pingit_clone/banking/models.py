@@ -26,7 +26,7 @@ class AccountStatus(models.Model):
         return self.account_status_desc
 
 
-class Account(models.Model):
+class Account(TimeStampedModel):
     account_status_code = models.ForeignKey(AccountStatus, on_delete=models.PROTECT)
     account_type_code = models.ForeignKey(AccountType, on_delete=models.PROTECT)
     customer_id = models.ForeignKey('customers.Customer', on_delete=models.PROTECT)
