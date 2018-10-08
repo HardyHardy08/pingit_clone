@@ -9,8 +9,8 @@ from customers.tests.test_models import valid_customer_data, setup_Identificatio
 
 def valid_account():
     return {
-        'account_status_code': Account.object.account_status_code("Active"),
-        'account_type_code': Account.object.account_type_code("Savings"),
+        'account_status_code': Account.objects.account_status_code("Active"),
+        'account_type_code': Account.objects.account_type_code("Savings"),
         'customer_id': Customer.objects.get(username='JohnDoe'),
         'account_number': '123-123-123000',
         'current_balance': '1000.0',
@@ -20,8 +20,8 @@ def valid_account():
 
 def invalid_account():
     return {
-        'account_status_code': Account.object.account_status_code("Active"),
-        'account_type_code': Account.object.account_type_code("Savings"),
+        'account_status_code': Account.objects.account_status_code("Active"),
+        'account_type_code': Account.objects.account_type_code("Savings"),
         'customer_id': '',
         'account_number': '123-123-123000',
         'current_balance': 200,
@@ -140,7 +140,8 @@ class AccountTest(TestCase):
 
     # Custom manager methods test
     def test_valid_create_savings_account_call(self):
-        new_savings_account = Account.objects.create_savings_account(
+        new_savings_account = Account.objects.create_account(
+            account_type="Savings",
             customer=Customer.objects.get(username='JohnDoe'),
             starting_balance=1000.50)
         self.assertEqual(new_savings_account.account_type_code,
@@ -148,12 +149,14 @@ class AccountTest(TestCase):
 
     def test_invalid_create_savings_account_call(self):
         with self.assertRaises(ValidationError):
-            Account.objects.create_savings_account(
+            Account.objects.create_account(
+                account_type="Savings",
                 customer=Customer.objects.get(username='JohnDoe'),
                 starting_balance="")
 
     def test_valid_create_deposit_account_call(self):
-        new_deposit_account = Account.objects.create_deposit_account(
+        new_deposit_account = Account.objects.create_account(
+            account_type="Deposit",
             customer=Customer.objects.get(username='JohnDoe'),
             starting_balance=1000.50)
         self.assertEqual(new_deposit_account.account_type_code,
@@ -161,6 +164,7 @@ class AccountTest(TestCase):
 
     def test_invalid_create_deposit_account_call(self):
         with self.assertRaises(ValidationError):
-            Account.objects.create_deposit_account(
+            Account.objects.create_account(
+                account_type="Deposit",
                 customer=Customer.objects.get(username='JohnDoe'),
                 starting_balance="")

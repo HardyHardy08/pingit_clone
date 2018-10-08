@@ -8,13 +8,22 @@ class Merchant(models.Model):
     merchant_ID = models.CharField(max_length=3, blank=False)
     merchant_desc = models.CharField(max_length=50, blank=False)
 
+    def __str__(self):
+        return self.merchant_ID + " : " + self.account_type_desc
+
 
 class AccountType(models.Model):
     account_type_desc = models.CharField(max_length=50, blank=False)
 
+    def __str__(self):
+        return self.account_type_desc
+
 
 class AccountStatus(models.Model):
     account_status_desc = models.CharField(max_length=20, blank=False)
+
+    def __str__(self):
+        return self.account_status_desc
 
 
 class Account(models.Model):
@@ -29,9 +38,15 @@ class Account(models.Model):
 
     objects = managers.AccountManager()
 
+    def __str__(self):
+        return self.account_number
+
 
 class TransactionType(models.Model):
     transaction_type_desc = models.CharField(max_length=50, blank=False)
+
+    def __str__(self):
+        return self.transaction_type_desc
 
 
 class Transaction(TimeStampedModel):
@@ -44,3 +59,6 @@ class Transaction(TimeStampedModel):
     other_details = models.CharField(max_length=140)
 
     objects = managers.TransactionManager()
+
+    def __str__(self):
+        return self.transaction_type + " : " + self.transaction_amount
