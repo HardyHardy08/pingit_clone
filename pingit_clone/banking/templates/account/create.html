@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Account
+{% endblock title %}
+
+{% block content %}
+    <h2>Create Account</h2>
+    <p>
+        To celebrate our opening, all new accounts are given 100 currency as a gift!
+    </p>
+    <form method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit'>Create Account</button>
+    </form>
+{% endblock content %}
