@@ -9,11 +9,22 @@ from customers.tests.test_models import valid_customer_data, setup_Identificatio
 
 def valid_account():
     return {
-        'account_status_code': AccountStatus.objects.get(account_status_desc='Active'),
-        'account_type_code': AccountType.objects.get(account_type_desc="Savings"),
+        'account_status_code': Account.object.account_status_code("Active"),
+        'account_type_code': Account.object.account_type_code("Savings"),
         'customer_id': Customer.objects.get(username='JohnDoe'),
         'account_number': '123-123-123000',
         'current_balance': '1000.0',
+        'other_details': '',
+    }
+
+
+def invalid_account():
+    return {
+        'account_status_code': Account.object.account_status_code("Active"),
+        'account_type_code': Account.object.account_type_code("Savings"),
+        'customer_id': '',
+        'account_number': '123-123-123000',
+        'current_balance': 200,
         'other_details': '',
     }
 
@@ -26,6 +37,7 @@ def create_fixtures():
     TransactionType.objects.create(transaction_type_desc="Transfer")
     AccountStatus.objects.create(account_status_desc="Active")
     AccountType.objects.create(account_type_desc="Savings")
+    AccountType.objects.create(account_type_desc="Deposit")
     Merchant.objects.create(merchant_ID="001", merchant_desc="Boong Bank")
 
 
@@ -89,23 +101,17 @@ class DefaultTransactionTest(TestCase):
     """
 
 
-class DefaultAccountTest(TestCase):
+class AccountTest(TestCase):
     """
-    Test default model manager functions for account model
+    Test model manager functions for account model
     """
 
     def setUp(self):
         create_fixtures()
         self.valid_account = valid_account()
-        self.invalid_account = {
-            'account_status_code': AccountStatus.objects.get(account_status_desc='Active'),
-            'account_type_code': AccountType.objects.get(account_type_desc="Savings"),
-            'customer_id': '',
-            'account_number': '123-123-123000',
-            'current_balance': 200,
-            'other_details': '',
-        }
+        self.invalid_account = invalid_account()
 
+    # Default manager methods test
     def test_valid_create_account(self):
         new_account = Account.objects.create(**self.valid_account)
         self.assertIsInstance(new_account, Account)
@@ -132,7 +138,29 @@ class DefaultAccountTest(TestCase):
         with self.assertRaises(Account.DoesNotExist):
             Account.objects.get(pk=account.pk)
 
-# class CustomAccountTest(unittest):
-    """
-    Test custom model manager functions for account model
-    """
+    # Custom manager methods test
+    def test_valid_create_savings_account_call(self):
+        new_savings_account = Account.objects.create_savings_account(
+            customer=Customer.objects.get(username='JohnDoe'),
+            starting_balance=1000.50)
+        self.assertEqual(new_savings_account.account_type_code,
+                         Account.objects.account_type_code("Savings"))
+
+    def test_invalid_create_savings_account_call(self):
+        with self.assertRaises(ValidationError):
+            Account.objects.create_savings_account(
+                customer=Customer.objects.get(username='JohnDoe'),
+                starting_balance="")
+
+    def test_valid_create_deposit_account_call(self):
+        new_deposit_account = Account.objects.create_deposit_account(
+            customer=Customer.objects.get(username='JohnDoe'),
+            starting_balance=1000.50)
+        self.assertEqual(new_deposit_account.account_type_code,
+                         Account.objects.account_type_code("Deposit"))
+
+    def test_invalid_create_deposit_account_call(self):
+        with self.assertRaises(ValidationError):
+            Account.objects.create_deposit_account(
+                customer=Customer.objects.get(username='JohnDoe'),
+                starting_balance="")
