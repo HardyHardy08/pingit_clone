@@ -5,12 +5,14 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        Hi, {{ user.username }}!
+        <p> Hi, {{ user.username }}! </p>
+
+        <a href="{% url 'banking:account-list' %}">Accounts</a>
         <p><a href="{% url 'logout' %}">logout</a></p>
     {% else %}
         <p>You are not logged in</p>
         <a href="{% url 'login' %}">login</a>
-        <a href="{% url 'signup' %}">signup</a>
+        <a href="{% url 'customers:signup' %}">signup</a>
     {% endif %}
 
 {% endblock content %}

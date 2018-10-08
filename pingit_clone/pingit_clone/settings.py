@@ -59,7 +59,7 @@ ROOT_URLCONF = 'pingit_clone.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [('templates')],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,5 +131,6 @@ STATIC_URL = '/static/'
 # Authentication settings
 AUTH_USER_MODEL = 'customers.Customer'
 
+LOGIN_URL = 'home'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
