@@ -2,6 +2,7 @@
 TODO:
     - APIfy the models
 """
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -24,21 +25,27 @@ class AccountCreateView(generic.View):
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            Account.objects.create_account(
+            new_account = Account.objects.create_account(
                 account_type_code=form.cleaned_data['account_type_code'],
                 customer=request.user,
                 starting_balance=100
             )
-            return HttpResponseRedirect(reverse_lazy('account-detail'))
+            return HttpResponseRedirect(reverse_lazy(
+                'banking:account-detail',
+                kwargs={'account_number': new_account.account_number}))
         return HttpResponseRedirect(reverse_lazy('account-create'))
 
 
-class AccountListView(generic.ListView):
+class AccountListView(LoginRequiredMixin, generic.ListView):
     model = Account
     template_name = 'account/index.html'
 
+    def get_queryset(self):
+        queryset = Account.objects.filter(customer_id=self.request.user)
+        return queryset
 
-class AccountDetailView(generic.DetailView):
+
+class AccountDetailView(LoginRequiredMixin, generic.DetailView):
     model = Account
     template_name = 'account/detail.html'
     slug_field = 'account_number'

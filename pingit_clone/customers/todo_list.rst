@@ -1,3 +1,5 @@
+views.py:
+    - create API for models
 models.py:
     - override clean methods to validate inputs. first_name, last_name, identification_number and
     contact_number CANNOT be empty

@@ -1,3 +1,5 @@
+views.py:
+    - create API for models
 models.py:
     - override clean methods to clean inputs. look up model.clean in django docs!
 
