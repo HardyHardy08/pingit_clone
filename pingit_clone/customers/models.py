@@ -1,14 +1,3 @@
-"""
-TODO:
-    Customer Model:
-    -tests show that Customer can still be saved with empty identification_number field as
-    django.db.models' blank=False only apply to form level validation. Add method or something
-    in model/manager to overload default save to keep that from passing
-    Refactoring:
-    - Remove IdentificationType class and use a more django-like method to populate
-    identification_type field of Customer
-"""
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
