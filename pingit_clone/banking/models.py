@@ -1,12 +1,11 @@
 """
 TODO:
-    Customer Model:
-    -tests show that Customer can still be saved with empty identification_number field as
-    django.db.models' blank=False only apply to form level validation. Add method or something
-    in model/manager to overload default save to keep that from passing
+    - override clean methods to clean inputs. look up model.clean in django docs!
+
     Refactoring:
-    - Remove IdentificationType class and use a more django-like method to populate
+    - Remove TYpe and Status classes and use a more django-like method to populate
     identification_type field of Customer
+
 """
 from django.db import models
 from model_utils.models import TimeStampedModel
@@ -33,7 +32,8 @@ class Account(models.Model):
     customer_id = models.ForeignKey('customers.Customer', on_delete=models.PROTECT)
 
     account_number = models.CharField(max_length=15, primary_key=True, blank=False)
-    current_balance = models.FloatField(default=0.0)
+    current_balance = models.DecimalField(max_digits=20, decimal_places=2,
+                                          default=0.0, blank=False)
     other_details = models.CharField(max_length=200, blank=True)
 
     objects = managers.AccountManager()
@@ -48,7 +48,8 @@ class Transaction(TimeStampedModel):
     merchant_ID = models.ForeignKey(Merchant, on_delete=models.PROTECT)
     transaction_type = models.ForeignKey(TransactionType, on_delete=models.PROTECT)
 
-    transaction_amount = models.FloatField(default=0.0, blank=False)
+    transaction_amount = models.DecimalField(max_digits=15, decimal_places=2,
+                                             default=0.0, blank=False)
     other_details = models.CharField(max_length=140)
 
     objects = managers.TransactionManager()
