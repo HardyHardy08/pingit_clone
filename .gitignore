@@ -1,3 +1,5 @@
+*.pyc
+__pycache__
 pingit_clone/pingit_clone/__pycache__/
 pingit_clone/pingit_clone/migrations/
 pingit_clone/__pycache__/
