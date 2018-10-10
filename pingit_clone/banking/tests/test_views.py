@@ -82,11 +82,34 @@ class TransactionViewsTest(TestCase):
             "username": "rahmaratnasyani",
             "password": "123123qweqwe"
         }
+        self.valid_transaction = {
+            'account_number': (Customer.objects.get(username=self.valid_user['username'])
+                               .account_set.first()),
+            'merchant_ID': models.Merchant.objects.first(),
+            'transaction_type': models.TransactionType.objects.first(),
+            'transaction_amount': 50,
+            'other_details': "This month's rent",
+            'destination_number': models.Account.objects.last()
+        }
+        self.invalid_transaction = {
+            'account_number': models.Account.objects.last(),
+            'merchant_ID': models.Merchant.objects.first(),
+            'transaction_type': models.TransactionType.objects.first(),
+            'transaction_amount': 'tree fiddy',
+            'other_details': 'August/18 rent',
+        }
 
     def test_valid_transaction_create_view(self):
         self.client.login(**self.valid_user)
-        new_transaction = self.client.post(reverse('banking:transaction-create'))
-        self.assertIsInstance(new_transaction, models.Transation)
+        response = self.client.post(reverse('banking:transaction-create'),
+                                    data=self.valid_transaction)
+        # self.client.post(reverse('banking:transaction-create'), data={})
+        print(response)
+        last_two_transactions = models.Transaction.objects.all()[:2]
+        self.assertEqual(
+            [transaction.account_number for transaction in last_two_transactions],
+            [self.valid_transaction['account_number'],
+             self.valid_transaction['destination_number']])
 
     def test_invalid_transaction_create_view(self):
         # bullshitting
