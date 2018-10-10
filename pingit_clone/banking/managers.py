@@ -20,7 +20,7 @@ class TransactionManager(models.Manager):
                 {'msg': other_details, 'destination': destination_number.account_number}))
         source.save()
         destination = self.model(
-            account_number=account_number,
+            account_number=destination_number,
             merchant_ID=merchant_ID,
             transaction_type=self.transaction_type("Deposit"),
             transaction_amount=transaction_amount,

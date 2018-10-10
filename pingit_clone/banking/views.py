@@ -51,7 +51,7 @@ class TransactionCreateView(generic.CreateView):
     form_class = TransactionCreationForm
 
     def form_valid(self, form):
-        transaction_object = Transaction.objects.create_transfer_transaction(**form.cleaned_data)
+        self.object = Transaction.objects.create_transfer_transaction(**form.cleaned_data)
         return HttpResponseRedirect(reverse_lazy(
             'banking:account-detail',
             kwargs={'account_number': self.object.source.account_number}))

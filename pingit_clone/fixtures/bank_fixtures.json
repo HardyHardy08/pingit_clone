@@ -9,10 +9,10 @@
 },
 {
   "model": "sessions.session",
-  "pk": "ontzl7gyayvehd2jqhre3ra7l4usq53k",
+  "pk": "lvmn0dfuky5kx0ztzi3wmnechclk6yid",
   "fields": {
-    "session_data": "ZmU0MGMzNDhkZWE1Y2ViMWY0YjY2MjU0NjdkOTY3YjYxYmRiN2JhZjp7Il9hdXRoX3VzZXJfaWQiOiI1IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1OGMwNzE1ZTk3ODZmZDBmOWJjYjI4YjgxYTdlOTJhYzM2MWNkZTk1In0=",
-    "expire_date": "2018-10-24T08:11:10.737Z"
+    "session_data": "NTE3Yzg3NGJjNzNlNTM1YjM3ZDRlODZlYzhjMTIyMDRiMmFlN2ZkMjp7Il9hdXRoX3VzZXJfaWQiOiI3IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIzMmI4OTlmMTNiMjgyYzZiOTEyYmRkMWIwOGI1ZmE1YjRkN2E5ZWZmIn0=",
+    "expire_date": "2018-10-24T15:29:49.490Z"
   }
 },
 {
@@ -66,6 +66,182 @@
   }
 },
 {
+  "model": "banking.transactiontype",
+  "pk": 2,
+  "fields": {
+    "transaction_type_desc": "Deposit"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 2,
+  "fields": {
+    "created": "2018-10-10T14:30:07.638Z",
+    "modified": "2018-10-10T14:30:07.651Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 3,
+  "fields": {
+    "created": "2018-10-10T14:33:12.169Z",
+    "modified": "2018-10-10T14:33:12.170Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 4,
+  "fields": {
+    "created": "2018-10-10T15:23:56.757Z",
+    "modified": "2018-10-10T15:23:56.758Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 5,
+  "fields": {
+    "created": "2018-10-10T15:24:21.587Z",
+    "modified": "2018-10-10T15:24:21.587Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 6,
+  "fields": {
+    "created": "2018-10-10T15:27:33.436Z",
+    "modified": "2018-10-10T15:27:33.436Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 7,
+  "fields": {
+    "created": "2018-10-10T15:28:21.973Z",
+    "modified": "2018-10-10T15:28:21.973Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 8,
+  "fields": {
+    "created": "2018-10-10T15:28:21.979Z",
+    "modified": "2018-10-10T15:28:21.979Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 2,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 9,
+  "fields": {
+    "created": "2018-10-10T15:30:30.281Z",
+    "modified": "2018-10-10T15:30:30.281Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 10,
+  "fields": {
+    "created": "2018-10-10T15:30:30.283Z",
+    "modified": "2018-10-10T15:30:30.283Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 2,
+    "transaction_amount": "50.00",
+    "other_details": "rent for this month"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 11,
+  "fields": {
+    "created": "2018-10-10T15:44:47.517Z",
+    "modified": "2018-10-10T15:44:47.518Z",
+    "account_number": "001-43376",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "0.09",
+    "other_details": "{\"msg\": \"helo\", \"destination\": \"001-71253\"}"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 12,
+  "fields": {
+    "created": "2018-10-10T15:44:47.521Z",
+    "modified": "2018-10-10T15:44:47.521Z",
+    "account_number": "001-43376",
+    "merchant_ID": 1,
+    "transaction_type": 2,
+    "transaction_amount": "0.09",
+    "other_details": "{\"msg\": \"helo\", \"source\": \"001-43376\"}"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 13,
+  "fields": {
+    "created": "2018-10-10T16:28:12.826Z",
+    "modified": "2018-10-10T16:28:12.826Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "20.00",
+    "other_details": "{\"msg\": \"asdasd\", \"destination\": \"001-43376\"}"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 14,
+  "fields": {
+    "created": "2018-10-10T16:28:12.837Z",
+    "modified": "2018-10-10T16:28:12.837Z",
+    "account_number": "001-43376",
+    "merchant_ID": 1,
+    "transaction_type": 2,
+    "transaction_amount": "20.00",
+    "other_details": "{\"msg\": \"asdasd\", \"source\": \"001-71253\"}"
+  }
+},
+{
   "model": "customers.identificationtype",
   "pk": 1,
   "fields": {
@@ -115,7 +291,7 @@
   "pk": 5,
   "fields": {
     "password": "pbkdf2_sha256$120000$hrE4SRwEeUAp$p+J/OQvri6DaL0CogXOqoye4QROOl+XkQf6c0v3IV9o=",
-    "last_login": "2018-10-10T08:11:10.734Z",
+    "last_login": "2018-10-10T12:13:11.306Z",
     "is_superuser": false,
     "username": "rahmaratnasyani",
     "first_name": "Rahma",
@@ -136,7 +312,7 @@
   "pk": 7,
   "fields": {
     "password": "pbkdf2_sha256$120000$gPdeiNSKIGJE$tQ7SJTowfLi7s2LxKZdGIbIixeUFZjsDQRL7hU5k2Ys=",
-    "last_login": "2018-10-08T15:37:01.821Z",
+    "last_login": "2018-10-10T15:29:49.487Z",
     "is_superuser": false,
     "username": "Abdulhs",
     "first_name": "Abdullah",
@@ -154,10 +330,25 @@
 },
 {
   "model": "banking.account",
-  "pk": "001-13877",
+  "pk": "001-38588",
   "fields": {
-    "created": "2018-10-08T14:58:23.520Z",
-    "modified": "2018-10-08T14:58:23.528Z",
+    "created": "2018-10-10T12:15:29.801Z",
+    "modified": "2018-10-10T12:15:29.805Z",
+    "account_status_code": 1,
+    "account_type_code": 1,
+    "customer_id": [
+      "rahmaratnasyani"
+    ],
+    "current_balance": "100.00",
+    "other_details": ""
+  }
+},
+{
+  "model": "banking.account",
+  "pk": "001-43376",
+  "fields": {
+    "created": "2018-10-10T12:04:51.642Z",
+    "modified": "2018-10-10T12:04:51.652Z",
     "account_status_code": 1,
     "account_type_code": 1,
     "customer_id": [
@@ -169,61 +360,16 @@
 },
 {
   "model": "banking.account",
-  "pk": "001-1577.",
+  "pk": "001-71253",
   "fields": {
-    "created": "2018-10-08T14:56:59.451Z",
-    "modified": "2018-10-08T14:56:59.527Z",
+    "created": "2018-10-10T12:01:58.786Z",
+    "modified": "2018-10-10T12:01:58.790Z",
     "account_status_code": 1,
     "account_type_code": 1,
-    "customer_id": [
-      "rahmaratnasyani"
-    ],
-    "current_balance": "100.00",
-    "other_details": ""
-  }
-},
-{
-  "model": "banking.account",
-  "pk": "001-17551",
-  "fields": {
-    "created": "2018-10-08T15:00:08.751Z",
-    "modified": "2018-10-08T15:00:08.755Z",
-    "account_status_code": 1,
-    "account_type_code": 2,
-    "customer_id": [
-      "rahmaratnasyani"
-    ],
-    "current_balance": "100.00",
-    "other_details": ""
-  }
-},
-{
-  "model": "banking.account",
-  "pk": "001-28024",
-  "fields": {
-    "created": "2018-10-08T14:56:59.451Z",
-    "modified": "2018-10-08T14:56:59.527Z",
-    "account_status_code": 1,
-    "account_type_code": 2,
     "customer_id": [
       "Abdulhs"
     ],
     "current_balance": "100.00",
-    "other_details": ""
-  }
-},
-{
-  "model": "banking.account",
-  "pk": "001-46883",
-  "fields": {
-    "created": "2018-10-08T14:56:59.451Z",
-    "modified": "2018-10-08T14:56:59.527Z",
-    "account_status_code": 1,
-    "account_type_code": 1,
-    "customer_id": [
-      "rahmaratnasyani"
-    ],
-    "current_balance": "1000.00",
     "other_details": ""
   }
 },

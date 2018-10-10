@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator 
+from django.core.validators import MinValueValidator
 from django.db import models
 from model_utils.models import TimeStampedModel
 
@@ -62,7 +62,8 @@ class Transaction(TimeStampedModel):
     objects = managers.TransactionManager()
 
     def __str__(self):
-        return self.transaction_type + " : " + self.transaction_amount
+        return (self.account_number.account_number +
+                " : " + self.transaction_type.transaction_type_desc)
 
     class Meta:
-        ordering = ['created']
+        ordering = ['-created']
