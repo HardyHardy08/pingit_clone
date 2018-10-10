@@ -66,13 +66,12 @@ class AccountViewsTest(TestCase):
         self.client.login(**self.valid_user)
         self.client.post(reverse('banking:account-create'),
                          data={'account_type_code': 'Savings'})
-        # self.assertRedirects(response, 'banking/account/')
         self.assertEqual(models.Account.objects.last().customer_id,
                          Customer.objects.get(username=self.valid_user['username']))
 
-    def test_invalid_account_create_view(self):
-        # how to test this?
-        pass
+    def test_unauthorized_account_create_view(self):
+        response = self.client.get(reverse('banking:account-create'))
+        self.assertRedirects(response, '/?next=/banking/account/create/')
 
 
 class TransactionViewsTest(TestCase):

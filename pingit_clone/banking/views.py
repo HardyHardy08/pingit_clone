@@ -8,7 +8,7 @@ from .forms import AccountCreationForm
 from .models import Account
 
 
-class AccountCreateView(generic.CreateView):
+class AccountCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'account/create.html'
     form_class = AccountCreationForm
 
