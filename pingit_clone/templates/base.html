@@ -5,6 +5,11 @@
 </head>
 <body>
     <main>
+        {% if user.is_authenticated %}
+        <p>
+            <a href="{% url 'home' %}">Home</a>
+        </p>
+        {% endif %}
         {% block content %}
             
         {% endblock content %}
