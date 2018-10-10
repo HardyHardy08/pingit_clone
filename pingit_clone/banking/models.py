@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator 
 from django.db import models
 from model_utils.models import TimeStampedModel
 
@@ -54,11 +55,14 @@ class Transaction(TimeStampedModel):
     merchant_ID = models.ForeignKey(Merchant, on_delete=models.PROTECT)
     transaction_type = models.ForeignKey(TransactionType, on_delete=models.PROTECT)
 
-    transaction_amount = models.DecimalField(max_digits=15, decimal_places=2,
-                                             default=0.0, blank=False)
+    transaction_amount = models.DecimalField(max_digits=15, decimal_places=2, blank=False,
+                                             validators=[MinValueValidator(0.00)])
     other_details = models.CharField(max_length=140)
 
     objects = managers.TransactionManager()
 
     def __str__(self):
         return self.transaction_type + " : " + self.transaction_amount
+
+    class Meta:
+        ordering = ['created']

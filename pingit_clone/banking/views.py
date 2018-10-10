@@ -3,9 +3,9 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import AccountCreationForm
+from .forms import AccountCreationForm, TransactionCreationForm
 
-from .models import Account
+from .models import Account, Transaction
 
 
 class AccountCreateView(LoginRequiredMixin, generic.CreateView):
@@ -43,3 +43,15 @@ class AccountDetailView(LoginRequiredMixin, generic.DetailView):
     def get_queryset(self):
         queryset = Account.objects.filter(customer_id=self.request.user)
         return queryset
+
+
+class TransactionCreateView(generic.CreateView):
+    model = Transaction
+    template_name = 'transaction/create.html'
+    form_class = TransactionCreationForm
+
+    def form_valid(self, form):
+        transaction_object = Transaction.objects.create_transfer_transaction(**form.cleaned_data)
+        return HttpResponseRedirect(reverse_lazy(
+            'banking:account-detail',
+            kwargs={'account_number': self.object.source.account_number}))

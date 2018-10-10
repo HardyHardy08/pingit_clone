@@ -1,10 +1,20 @@
 # from django import forms
-from django.forms import ModelForm
-from .models import Account
+from django import forms
+from .models import Account, Transaction
 
 
-class AccountCreationForm(ModelForm):
+class AccountCreationForm(forms.ModelForm):
     class Meta:
         model = Account
         fields = ['account_type_code']
         labels = {'account_type_code': 'Account Type'}
+
+
+class TransactionCreationForm(forms.ModelForm):
+    destination_number = forms.ModelChoiceField(
+        queryset=Account.objects.all())
+
+    class Meta:
+        model = Transaction
+        fields = ['account_number', 'merchant_ID', 'transaction_type', 'transaction_amount',
+                  'other_details', 'destination_number']

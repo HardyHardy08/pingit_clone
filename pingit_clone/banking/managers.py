@@ -1,10 +1,33 @@
-import random
-
+import json, random
+from collections import namedtuple
 from django.db import models
 
 
 class TransactionManager(models.Manager):
-    pass
+
+    def transaction_type(self, transaction_type):
+        from .models import TransactionType
+        return TransactionType.objects.get(transaction_type_desc=transaction_type)
+
+    def create_transfer_transaction(self, account_number, merchant_ID, transaction_type,
+                                    transaction_amount, other_details, destination_number):
+        source = self.model(
+            account_number=account_number,
+            merchant_ID=merchant_ID,
+            transaction_type=self.transaction_type("Transfer"),
+            transaction_amount=transaction_amount,
+            other_details=json.dumps(
+                {'msg': other_details, 'destination': destination_number.account_number}))
+        source.save()
+        destination = self.model(
+            account_number=account_number,
+            merchant_ID=merchant_ID,
+            transaction_type=self.transaction_type("Deposit"),
+            transaction_amount=transaction_amount,
+            other_details=json.dumps(
+                {'msg': other_details, 'source': account_number.account_number}))
+        destination.save()
+        return namedtuple('transfer', ['source', 'destination'])(source, destination)
 
 
 class AccountManager(models.Manager):
