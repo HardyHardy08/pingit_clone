@@ -111,9 +111,10 @@ class TransactionViewsTest(TestCase):
              self.valid_transaction['account_number']])
 
     def test_invalid_transaction_create_view(self):
-        # bullshitting
-        new_transaction = self.client.post(reverse('banking:transaction-create'))
-        self.assertEqual(new_transaction.status_code, 400)
+        response = self.client.post(reverse('banking:transaction-create'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.is_rendered, True)
+        self.assertEqual(response.context_data['form'].is_valid(), False)
 
     def test_valid_transaction_list_view(self):
         self.client.login(**self.valid_user)
