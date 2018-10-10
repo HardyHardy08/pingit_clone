@@ -30,6 +30,10 @@ class AccountViewsTest(TestCase):
             response.context['account_list'].first(),
             customer.account_set.all().first(),
         )
+        self.assertEqual(
+            response.context['account_list'].last(),
+            customer.account_set.all().last(),
+        )
 
     def test_unauthorized_account_list_view(self):
         response = self.client.get(reverse('banking:account-list'))
@@ -48,9 +52,15 @@ class AccountViewsTest(TestCase):
             detail_view.context_data['account'].customer_id,
             Customer.objects.get(username=self.valid_user['username']))
 
-    def test_invalid_account_detail_view(self):
-        # how to test this?
-        pass
+    def test_unauthorized_account_detail_view(self):
+        self.client.login(**self.valid_user)
+        customer = Customer.objects.get(username=self.valid_user['username'])
+        other_customer_account = models.Account.objects.exclude(customer_id=customer).first()
+        response = self.client.get(reverse(
+            'banking:account-detail',
+            kwargs={'account_number': other_customer_account.account_number}
+        ))
+        self.assertEqual(response.status_code, 404)
 
     def test_valid_account_create_view(self):
         self.client.login(**self.valid_user)

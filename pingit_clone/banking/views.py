@@ -39,3 +39,7 @@ class AccountDetailView(LoginRequiredMixin, generic.DetailView):
     context_object_name = 'account'
     slug_field = 'account_number'
     slug_url_kwarg = 'account_number'
+
+    def get_queryset(self):
+        queryset = Account.objects.filter(customer_id=self.request.user)
+        return queryset
