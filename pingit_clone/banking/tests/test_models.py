@@ -1,17 +1,16 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from banking.models import (
-    Transaction, TransactionType, Account, AccountStatus, AccountType, Merchant
+    Transaction, TransactionType, Account, Merchant
 )
 from customers.models import Customer
-from customers.tests.test_models import valid_customer_data, setup_IdentificationTypes
 
 
 def valid_account():
     return {
         'account_status_code': Account.objects.account_status_code("Active"),
         'account_type_code': Account.objects.account_type_code("Savings"),
-        'customer_id': Customer.objects.get(username='JohnDoe'),
+        'customer_id': Customer.objects.first(),
         'account_number': '123-123-123000',
         'current_balance': '1000.0',
         'other_details': '',
@@ -29,35 +28,24 @@ def invalid_account():
     }
 
 
-def create_fixtures():
-    # Customer app models
-    setup_IdentificationTypes()
-    Customer.objects.create(**valid_customer_data())
-
-    TransactionType.objects.create(transaction_type_desc="Transfer")
-    AccountStatus.objects.create(account_status_desc="Active")
-    AccountType.objects.create(account_type_desc="Savings")
-    AccountType.objects.create(account_type_desc="Deposit")
-    Merchant.objects.create(merchant_ID="001", merchant_desc="Boong Bank")
-
-
 class DefaultTransactionTest(TestCase):
     """
     Test default model manager functions for transaction model
     """
+    fixtures = ['bank_fixtures']
 
     def setUp(self):
-        create_fixtures()
-        account = Account.objects.create(**valid_account())
+        # create_fixtures()
+        # account = Account.objects.create(**valid_account())
         self.valid_transaction = {
-            'account_number': account,
+            'account_number': Account.objects.last(),
             'merchant_ID': Merchant.objects.get(merchant_ID="001"),
             'transaction_type': TransactionType.objects.get(transaction_type_desc="Transfer"),
             'transaction_amount': 10.0,
             'other_details': 'August/18 rent',
         }
         self.invalid_transaction = {
-            'account_number': account,
+            'account_number': Account.objects.last(),
             'merchant_ID': Merchant.objects.get(merchant_ID="001"),
             'transaction_type': TransactionType.objects.get(transaction_type_desc="Transfer"),
             'transaction_amount': 'tree fiddy',
@@ -105,9 +93,9 @@ class AccountTest(TestCase):
     """
     Test model manager functions for account model
     """
+    fixtures = ['bank_fixtures']
 
     def setUp(self):
-        create_fixtures()
         self.valid_account = valid_account()
         self.invalid_account = invalid_account()
 
@@ -141,8 +129,8 @@ class AccountTest(TestCase):
     # Custom manager methods test
     def test_valid_create_savings_account_call(self):
         new_savings_account = Account.objects.create_account(
-            account_type="Savings",
-            customer=Customer.objects.get(username='JohnDoe'),
+            account_type_code="Savings",
+            customer=Customer.objects.first(),
             starting_balance=1000.50)
         self.assertEqual(new_savings_account.account_type_code,
                          Account.objects.account_type_code("Savings"))
@@ -150,14 +138,14 @@ class AccountTest(TestCase):
     def test_invalid_create_savings_account_call(self):
         with self.assertRaises(ValidationError):
             Account.objects.create_account(
-                account_type="Savings",
-                customer=Customer.objects.get(username='JohnDoe'),
+                account_type_code="Savings",
+                customer=Customer.objects.first(),
                 starting_balance="")
 
     def test_valid_create_deposit_account_call(self):
         new_deposit_account = Account.objects.create_account(
-            account_type="Deposit",
-            customer=Customer.objects.get(username='JohnDoe'),
+            account_type_code="Deposit",
+            customer=Customer.objects.first(),
             starting_balance=1000.50)
         self.assertEqual(new_deposit_account.account_type_code,
                          Account.objects.account_type_code("Deposit"))
@@ -165,6 +153,6 @@ class AccountTest(TestCase):
     def test_invalid_create_deposit_account_call(self):
         with self.assertRaises(ValidationError):
             Account.objects.create_account(
-                account_type="Deposit",
-                customer=Customer.objects.get(username='JohnDoe'),
+                account_type_code="Deposit",
+                customer=Customer.objects.first(),
                 starting_balance="")

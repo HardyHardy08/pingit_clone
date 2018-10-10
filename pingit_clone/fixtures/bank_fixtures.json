@@ -1,0 +1,240 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "ld8qpe60miokplwje9an6yydn376brxw",
+  "fields": {
+    "session_data": "NTE3Yzg3NGJjNzNlNTM1YjM3ZDRlODZlYzhjMTIyMDRiMmFlN2ZkMjp7Il9hdXRoX3VzZXJfaWQiOiI3IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIzMmI4OTlmMTNiMjgyYzZiOTEyYmRkMWIwOGI1ZmE1YjRkN2E5ZWZmIn0=",
+    "expire_date": "2018-10-22T15:14:25.094Z"
+  }
+},
+{
+  "model": "banking.merchant",
+  "pk": 1,
+  "fields": {
+    "merchant_ID": "001",
+    "merchant_desc": "Boong Bank"
+  }
+},
+{
+  "model": "banking.accounttype",
+  "pk": 1,
+  "fields": {
+    "account_type_desc": "Savings"
+  }
+},
+{
+  "model": "banking.accounttype",
+  "pk": 2,
+  "fields": {
+    "account_type_desc": "Deposit"
+  }
+},
+{
+  "model": "banking.accountstatus",
+  "pk": 1,
+  "fields": {
+    "account_status_desc": "Active"
+  }
+},
+{
+  "model": "banking.accountstatus",
+  "pk": 2,
+  "fields": {
+    "account_status_desc": "Deactivated"
+  }
+},
+{
+  "model": "banking.accountstatus",
+  "pk": 3,
+  "fields": {
+    "account_status_desc": "Suspended"
+  }
+},
+{
+  "model": "banking.transactiontype",
+  "pk": 1,
+  "fields": {
+    "transaction_type_desc": "Transfer"
+  }
+},
+{
+  "model": "customers.identificationtype",
+  "pk": 1,
+  "fields": {
+    "identification_description": "Kartu Tanda Penduduk (KTP)",
+    "created_at": "2018-10-06T08:50:27.874Z"
+  }
+},
+{
+  "model": "customers.identificationtype",
+  "pk": 2,
+  "fields": {
+    "identification_description": "Surat Izin Mengemudi (SIM)",
+    "created_at": "2018-10-06T08:51:37.857Z"
+  }
+},
+{
+  "model": "customers.identificationtype",
+  "pk": 3,
+  "fields": {
+    "identification_description": "Paspor",
+    "created_at": "2018-10-06T08:51:44.730Z"
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$IJs2EaMhfODH$0Uu268CDvkb+c3JZ71+2/EpdYv6Nd8i/5SSU5UanUaQ=",
+    "last_login": "2018-10-07T08:24:17Z",
+    "is_superuser": true,
+    "username": "hardy",
+    "first_name": "hardy",
+    "last_name": "hardiansyah",
+    "email": "hardyhardy@boongbank.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2018-10-06T08:59:19Z",
+    "identification_type": 1,
+    "identification_number": "123456789",
+    "contact_number": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$hrE4SRwEeUAp$p+J/OQvri6DaL0CogXOqoye4QROOl+XkQf6c0v3IV9o=",
+    "last_login": "2018-10-08T15:00:03.991Z",
+    "is_superuser": false,
+    "username": "rahmaratnasyani",
+    "first_name": "Rahma",
+    "last_name": "Ratnasyani",
+    "email": "rahmaratnasyani@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2018-10-06T09:26:28.940Z",
+    "identification_type": 1,
+    "identification_number": "3654000319021998",
+    "contact_number": "0817881902",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$gPdeiNSKIGJE$tQ7SJTowfLi7s2LxKZdGIbIixeUFZjsDQRL7hU5k2Ys=",
+    "last_login": "2018-10-08T15:37:01.821Z",
+    "is_superuser": false,
+    "username": "Abdulhs",
+    "first_name": "Abdullah",
+    "last_name": "Harlansyah",
+    "email": "abdulhs@boongbank.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2018-10-08T13:16:57.772Z",
+    "identification_type": 1,
+    "identification_number": "3654000112061962",
+    "contact_number": "0819810510",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "banking.account",
+  "pk": "001-13877",
+  "fields": {
+    "created": "2018-10-08T14:58:23.520Z",
+    "modified": "2018-10-08T14:58:23.528Z",
+    "account_status_code": 1,
+    "account_type_code": 1,
+    "customer_id": [
+      "Abdulhs"
+    ],
+    "current_balance": "100.00",
+    "other_details": ""
+  }
+},
+{
+  "model": "banking.account",
+  "pk": "001-1577.",
+  "fields": {
+    "created": "2018-10-08T14:56:59.451Z",
+    "modified": "2018-10-08T14:56:59.527Z",
+    "account_status_code": 1,
+    "account_type_code": 1,
+    "customer_id": [
+      "rahmaratnasyani"
+    ],
+    "current_balance": "100.00",
+    "other_details": ""
+  }
+},
+{
+  "model": "banking.account",
+  "pk": "001-17551",
+  "fields": {
+    "created": "2018-10-08T15:00:08.751Z",
+    "modified": "2018-10-08T15:00:08.755Z",
+    "account_status_code": 1,
+    "account_type_code": 2,
+    "customer_id": [
+      "rahmaratnasyani"
+    ],
+    "current_balance": "100.00",
+    "other_details": ""
+  }
+},
+{
+  "model": "banking.account",
+  "pk": "001-28024",
+  "fields": {
+    "created": "2018-10-08T14:56:59.451Z",
+    "modified": "2018-10-08T14:56:59.527Z",
+    "account_status_code": 1,
+    "account_type_code": 2,
+    "customer_id": [
+      "Abdulhs"
+    ],
+    "current_balance": "100.00",
+    "other_details": ""
+  }
+},
+{
+  "model": "banking.account",
+  "pk": "001-46883",
+  "fields": {
+    "created": "2018-10-08T14:56:59.451Z",
+    "modified": "2018-10-08T14:56:59.527Z",
+    "account_status_code": 1,
+    "account_type_code": 1,
+    "customer_id": [
+      "rahmaratnasyani"
+    ],
+    "current_balance": "1000.00",
+    "other_details": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2018-10-07T08:26:25.067Z",
+    "user": [
+      "hardy"
+    ],
+    "content_type": [
+      "customers",
+      "customer"
+    ],
+    "object_id": "4",
+    "object_repr": "hardyhardy@boongbank.com: hardy hardiansyah",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"first_name\", \"last_name\"]}}]"
+  }
+}
+]

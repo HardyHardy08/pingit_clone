@@ -23,7 +23,7 @@ class AccountManager(models.Manager):
     def create_account(self, account_type_code, customer, starting_balance, other_details=''):
         new_account = self.model(
             account_status_code=self.account_status_code("Active"),
-            account_type_code=account_type_code,
+            account_type_code=self.account_type_code(account_type_code),
             customer_id=customer,
             account_number=self._account_number_generator(),
             current_balance=starting_balance,

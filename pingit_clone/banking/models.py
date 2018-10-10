@@ -5,11 +5,11 @@ from . import managers
 
 
 class Merchant(models.Model):
-    merchant_ID = models.CharField(max_length=3, blank=False)
+    merchant_ID = models.CharField(max_length=3, blank=False, unique=True)
     merchant_desc = models.CharField(max_length=50, blank=False)
 
     def __str__(self):
-        return self.merchant_ID + " : " + self.account_type_desc
+        return self.merchant_ID + " : " + self.merchant_desc
 
 
 class AccountType(models.Model):
