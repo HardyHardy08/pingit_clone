@@ -44,6 +44,11 @@ class AccountDetailView(LoginRequiredMixin, generic.DetailView):
         queryset = Account.objects.filter(customer_id=self.request.user)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['transaction_list'] = self.object.transaction_set.all()
+        return context
+
 
 class TransactionCreateView(generic.CreateView):
     model = Transaction

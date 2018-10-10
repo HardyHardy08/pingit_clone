@@ -9,10 +9,18 @@
 },
 {
   "model": "sessions.session",
-  "pk": "lvmn0dfuky5kx0ztzi3wmnechclk6yid",
+  "pk": "g4dpl6j1srwt15ryb2w62fdyxx06yyrv",
   "fields": {
     "session_data": "NTE3Yzg3NGJjNzNlNTM1YjM3ZDRlODZlYzhjMTIyMDRiMmFlN2ZkMjp7Il9hdXRoX3VzZXJfaWQiOiI3IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIzMmI4OTlmMTNiMjgyYzZiOTEyYmRkMWIwOGI1ZmE1YjRkN2E5ZWZmIn0=",
-    "expire_date": "2018-10-24T15:29:49.490Z"
+    "expire_date": "2018-10-24T18:22:20.541Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ujftm8nezly0vbq8mhn02x4f3b8jjloh",
+  "fields": {
+    "session_data": "ZmU0MGMzNDhkZWE1Y2ViMWY0YjY2MjU0NjdkOTY3YjYxYmRiN2JhZjp7Il9hdXRoX3VzZXJfaWQiOiI1IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1OGMwNzE1ZTk3ODZmZDBmOWJjYjI4YjgxYTdlOTJhYzM2MWNkZTk1In0=",
+    "expire_date": "2018-10-24T18:21:59.525Z"
   }
 },
 {
@@ -242,6 +250,58 @@
   }
 },
 {
+  "model": "banking.transaction",
+  "pk": 15,
+  "fields": {
+    "created": "2018-10-10T18:21:20.619Z",
+    "modified": "2018-10-10T18:21:20.619Z",
+    "account_number": "001-38588",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "12.00",
+    "other_details": "{\"msg\": \"lunch\", \"destination\": \"001-43376\"}"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 16,
+  "fields": {
+    "created": "2018-10-10T18:21:20.629Z",
+    "modified": "2018-10-10T18:21:20.629Z",
+    "account_number": "001-43376",
+    "merchant_ID": 1,
+    "transaction_type": 2,
+    "transaction_amount": "12.00",
+    "other_details": "{\"msg\": \"lunch\", \"source\": \"001-38588\"}"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 17,
+  "fields": {
+    "created": "2018-10-10T18:22:33.869Z",
+    "modified": "2018-10-10T18:22:33.870Z",
+    "account_number": "001-71253",
+    "merchant_ID": 1,
+    "transaction_type": 1,
+    "transaction_amount": "21.00",
+    "other_details": "{\"msg\": \"dinner\", \"destination\": \"001-38588\"}"
+  }
+},
+{
+  "model": "banking.transaction",
+  "pk": 18,
+  "fields": {
+    "created": "2018-10-10T18:22:33.875Z",
+    "modified": "2018-10-10T18:22:33.876Z",
+    "account_number": "001-38588",
+    "merchant_ID": 1,
+    "transaction_type": 2,
+    "transaction_amount": "21.00",
+    "other_details": "{\"msg\": \"dinner\", \"source\": \"001-71253\"}"
+  }
+},
+{
   "model": "customers.identificationtype",
   "pk": 1,
   "fields": {
@@ -291,7 +351,7 @@
   "pk": 5,
   "fields": {
     "password": "pbkdf2_sha256$120000$hrE4SRwEeUAp$p+J/OQvri6DaL0CogXOqoye4QROOl+XkQf6c0v3IV9o=",
-    "last_login": "2018-10-10T12:13:11.306Z",
+    "last_login": "2018-10-10T18:21:59.522Z",
     "is_superuser": false,
     "username": "rahmaratnasyani",
     "first_name": "Rahma",
@@ -312,7 +372,7 @@
   "pk": 7,
   "fields": {
     "password": "pbkdf2_sha256$120000$gPdeiNSKIGJE$tQ7SJTowfLi7s2LxKZdGIbIixeUFZjsDQRL7hU5k2Ys=",
-    "last_login": "2018-10-10T15:29:49.487Z",
+    "last_login": "2018-10-10T18:22:20.537Z",
     "is_superuser": false,
     "username": "Abdulhs",
     "first_name": "Abdullah",
