@@ -14,4 +14,6 @@
         {{ form.as_p }}
         <button type='submit'>Create Account</button>
     </form>
+
+    <p><a href="{% url 'banking:account-list' %}">Cancel</a></p>
 {% endblock content %}

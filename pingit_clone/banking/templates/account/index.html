@@ -4,17 +4,19 @@
 {% endblock title %}
 
 {% block content %}
-   <ul>
-    {% for account in object_list %}
+    {% for account in account_list %}
+    <ul>
         <li><a href="{% url 'banking:account-detail' account.account_number %}">{{ account }}</a></li>
         <p>{{ account.account_type_code }}</p>
         <p>Balance: {{ account.current_balance }}</p>
         {# <p>Last Transaction: {{ }}</p> <-- to be added soon-ish#}
+    </ul>
     {% empty %}
-        <li>You have no accounts. <a href="#">Click here to create a new account</a></li>
+        <p>You have no accounts.</p>
+        <p><a href="{% url 'banking:account-create' %}">Click here to create a new account</a></p>
 
     {% endfor %}
-    </ul>
-
-    <p>Would you like to open a new account? <a href="{% url 'banking:account-create' %}">Click here</a></p>
+    {% if account_list %}
+        <p>Would you like to open a new account? <a href="{% url 'banking:account-create' %}">Click here</a></p>
+    {% endif %}
 {% endblock content %}
