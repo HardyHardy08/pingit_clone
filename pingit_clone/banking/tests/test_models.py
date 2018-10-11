@@ -28,7 +28,7 @@ def invalid_account():
     }
 
 
-class DefaultTransactionTest(TestCase):
+class TransactionTest(TestCase):
     """
     Test default model manager functions for transaction model
     """
@@ -52,6 +52,7 @@ class DefaultTransactionTest(TestCase):
             'other_details': 'August/18 rent',
         }
 
+    # Default manager methods test
     def test_valid_create_transaction(self):
         new_transaction = Transaction.objects.create(**self.valid_transaction)
         self.assertIsInstance(new_transaction, Transaction)
@@ -82,11 +83,36 @@ class DefaultTransactionTest(TestCase):
         with self.assertRaises(Transaction.DoesNotExist):
             Transaction.objects.get(pk=transaction.pk)
 
-
-# class CustomTransactionTest(unittest):
-    """
-    Test custom model manager functions for transaction model
-    """
+    def test_new_transaction_updates_related_account_balance(self):
+        # can be better
+        customer = Customer.objects.last()
+        starting_balance = 1000
+        account = Account.objects.create_account(
+            account_type_code="Savings",
+            customer=customer,
+            starting_balance=starting_balance)
+        other_account = Account.objects.create_account(
+            account_type_code="Savings",
+            customer=customer,
+            starting_balance=500)
+        Transaction.objects.create_transfer_transaction(
+            account_number=account,
+            merchant_ID=Merchant.objects.first(),
+            transaction_type="Transfer",
+            transaction_amount=50,
+            other_details="Lunch",
+            destination_number=other_account)
+        Transaction.objects.create_transfer_transaction(
+            account_number=account,
+            merchant_ID=Merchant.objects.first(),
+            transaction_type="Transfer",
+            transaction_amount=50,
+            other_details="Dinner",
+            destination_number=other_account)
+        self.assertEqual(other_account, Account.objects.latest())
+        self.assertEqual(other_account, Transaction.objects.latest().account_number)
+        self.assertIn("Dinner", Transaction.objects.latest().other_details)
+        self.assertNotEqual(account.current_balance, starting_balance)
 
 
 class AccountTest(TestCase):

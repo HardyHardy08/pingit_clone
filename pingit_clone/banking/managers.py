@@ -27,6 +27,8 @@ class TransactionManager(models.Manager):
             other_details=json.dumps(
                 {'msg': other_details, 'source': account_number.account_number}))
         destination.save()
+        source.account_number.update_balance()
+        destination.account_number.update_balance()
         return namedtuple('transfer', ['source', 'destination'])(source, destination)
 
 

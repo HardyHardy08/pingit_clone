@@ -39,8 +39,24 @@ class Account(TimeStampedModel):
 
     objects = managers.AccountManager()
 
+    def update_balance(self):
+        queryset = self.transaction_set.filter(created__gte=self.modified).values(
+            'transaction_amount', 'transaction_type')
+        outgoing = 0
+        incoming = 0
+        for transaction in queryset:
+            if transaction['transaction_type'] == 1:
+                outgoing += transaction['transaction_amount']
+            if transaction['transaction_type'] == 2:
+                incoming += transaction['transaction_amount']
+        self.current_balance = self.current_balance - outgoing + incoming
+        self.save()
+
     def __str__(self):
         return self.account_number
+
+    class Meta:
+        get_latest_by = 'created'
 
 
 class TransactionType(models.Model):
@@ -66,4 +82,5 @@ class Transaction(TimeStampedModel):
                 " : " + self.transaction_type.transaction_type_desc)
 
     class Meta:
+        get_latest_by = 'created'
         ordering = ['-created']
