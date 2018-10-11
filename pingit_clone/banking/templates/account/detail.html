@@ -10,10 +10,17 @@
     <p>{{ account.current_balance }}</p>
     <p>{{ account.account_type_code }}</p>
     <p>{{ account.account_status_code }}</p>
-
+    <p>Past Transactions:</p>
+    <ul>
+    {% for transaction in transaction_list %}
+    <li>
+        {{ transaction.created }} <br> 
+        {{ transaction.transaction_type }}: {{ transaction.transaction_amount }} -- {{ transaction.other_details.msg }}
+    </li><br>    
+    {% endfor %}
+    </ul>
     <br>
     <br>
     <br>
-
     <p><a href="{% url 'banking:account-list' %}">Accounts</a></p>
 {% endblock content %}

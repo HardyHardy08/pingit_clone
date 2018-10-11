@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -46,7 +47,10 @@ class AccountDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['transaction_list'] = self.object.transaction_set.all()
+        transaction_list = self.object.transaction_set.all()
+        for transaction in transaction_list:
+            transaction.other_details = json.loads(transaction.other_details)
+        context['transaction_list'] = transaction_list
         return context
 
 
