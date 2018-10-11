@@ -65,13 +65,13 @@ class AccountViewsTest(TestCase):
         # This is to remove quotes ( ' ) from the queryset because causing the exact same queryset
         # to be listed differntly -- one in strings and one as objects.
         # Will refactor if found better way to user assertQuerysetEqual.
-        quotes_qs = map(
+        quotes_qs = list(map(
             repr,
             models.Account.objects.get(account_number=account_number).transaction_set.all()
-        )
+        ))
         self.assertQuerysetEqual(
             response.context_data['transaction_list'],
-            list(quotes_qs))
+            quotes_qs)
 
     def test_unauthorized_account_detail_view(self):
         self.client.login(**self.valid_user)
@@ -104,7 +104,8 @@ class TransactionViewsTest(TestCase):
             "password": "123123qweqwe"
         }
         self.valid_transaction = {
-            'account_number': models.Account.objects.first(),
+            'account_number':
+                Customer.objects.get(username=self.valid_user['username']).account_set.first(),
             'merchant_ID': '1',
             'transaction_type': '1',
             'transaction_amount': 50,
@@ -131,11 +132,25 @@ class TransactionViewsTest(TestCase):
             [self.valid_transaction['destination_number'],
              self.valid_transaction['account_number']])
 
-    def test_invalid_transaction_create_view(self):
+    def test_transaction_create_view_only_show_user_owned_accounts(self):
+        self.client.login(**self.valid_user)
         response = self.client.post(reverse('banking:transaction-create'))
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.is_rendered, True)
-        self.assertEqual(response.context_data['form'].is_valid(), False)
+        authorized_account_numbers = (
+            Customer.objects.get(username=self.valid_user['username']).account_set.all()
+        )
+        account_number_options = list(map(
+            repr, response.context_data['form'].fields['account_number'].queryset))
+        print(authorized_account_numbers)
+        print(account_number_options)
+        self.assertQuerysetEqual(authorized_account_numbers, account_number_options, ordered=False)
+
+    def test_anonymous_transaction_create_view(self):
+        response = self.client.post(reverse('banking:transaction-create'))
+        self.assertRedirects(response, '/?next=/banking/transaction/create')
+
+    def test_unauthorized_transaction_create_view(self):
+        response = self.client.post(reverse('banking:transaction-create'))
+        self.assertRedirects(response, '/?next=/banking/transaction/create')
 
     def test_valid_transaction_list_view(self):
         # this test is currently unnecessary

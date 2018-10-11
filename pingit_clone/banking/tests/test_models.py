@@ -57,6 +57,9 @@ class TransactionTest(TestCase):
         new_transaction = Transaction.objects.create(**self.valid_transaction)
         self.assertIsInstance(new_transaction, Transaction)
 
+    def test_only_create_transaction_on_owned_accounts(self):
+        pass
+
     def test_invalid_create_transaction(self):
         with self.assertRaises(ValidationError):
             Transaction.objects.create(**self.invalid_transaction)

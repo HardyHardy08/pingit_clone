@@ -14,6 +14,10 @@ class TransactionCreationForm(forms.ModelForm):
     destination_number = forms.ModelChoiceField(
         queryset=Account.objects.all())
 
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['account_number'].queryset = Account.objects.filter(customer_id=user)
+
     class Meta:
         model = Transaction
         fields = ['account_number', 'merchant_ID', 'transaction_type', 'transaction_amount',
