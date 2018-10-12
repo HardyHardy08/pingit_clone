@@ -13,6 +13,7 @@ class AccountCreationForm(forms.ModelForm):
 class TransactionCreationForm(forms.ModelForm):
     destination_number = forms.ModelChoiceField(
         queryset=Account.objects.all())
+    transaction_amount = forms.DecimalField(min_value=0)
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
