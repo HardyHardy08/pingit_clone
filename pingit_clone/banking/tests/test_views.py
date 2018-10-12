@@ -134,14 +134,14 @@ class TransactionViewsTest(TestCase):
 
     def test_transaction_create_view_only_show_user_owned_accounts(self):
         self.client.login(**self.valid_user)
+
         response = self.client.post(reverse('banking:transaction-create'))
         authorized_account_numbers = (
             Customer.objects.get(username=self.valid_user['username']).account_set.all()
         )
         account_number_options = list(map(
             repr, response.context_data['form'].fields['account_number'].queryset))
-        print(authorized_account_numbers)
-        print(account_number_options)
+
         self.assertQuerysetEqual(authorized_account_numbers, account_number_options, ordered=False)
 
     def test_anonymous_transaction_create_view(self):
@@ -151,18 +151,3 @@ class TransactionViewsTest(TestCase):
     def test_unauthorized_transaction_create_view(self):
         response = self.client.post(reverse('banking:transaction-create'))
         self.assertRedirects(response, '/?next=/banking/transaction/create')
-
-    def test_valid_transaction_list_view(self):
-        # this test is currently unnecessary
-        pass
-
-    def test_invalid_transaction_list_view(self):
-        # how do i test this??
-        pass
-
-    def test_valid_transaction_detail_view(self):
-        # this test is currently unnecessary
-        pass
-
-    def test_invalid_transaction_detail_view(self):
-        pass
