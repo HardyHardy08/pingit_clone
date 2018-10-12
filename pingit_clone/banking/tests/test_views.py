@@ -103,6 +103,10 @@ class TransactionViewsTest(TestCase):
             "username": "rahmaratnasyani",
             "password": "123123qweqwe"
         }
+        self.other_valid_user = {
+            "username": "Abdulhs",
+            "password": "qweqweasdasd"
+        }
         self.valid_transaction = {
             'account_number':
                 Customer.objects.get(username=self.valid_user['username']).account_set.first(),
@@ -124,8 +128,7 @@ class TransactionViewsTest(TestCase):
         self.client.login(**self.valid_user)
         self.client.post(
             reverse('banking:transaction-create'),
-            data=self.valid_transaction,
-            follow=True)
+            data=self.valid_transaction)
         last_two_transactions = models.Transaction.objects.all()[:2]
         self.assertEqual(
             [transaction.account_number for transaction in last_two_transactions],
@@ -143,6 +146,21 @@ class TransactionViewsTest(TestCase):
             repr, response.context_data['form'].fields['account_number'].queryset))
 
         self.assertQuerysetEqual(authorized_account_numbers, account_number_options, ordered=False)
+
+    def test_only_create_transaction_on_owned_accounts(self):
+        """
+        Was going to implement a __account_owner_is_valid in view. But Django's form validation
+        catches the invalid data and simply returns a choice is not valid response.
+        """
+        self.client.login(**self.valid_user)
+        unauthorized_transaction = self.valid_transaction
+        unauthorized_transaction['account_number'] = (
+            Customer.objects.get(username=self.other_valid_user['username']).account_set.first(),
+        )
+        response = self.client.post(
+            reverse('banking:transaction-create'),
+            data=unauthorized_transaction)
+        self.assertContains(response, "That choice is not one of the available choices")
 
     def test_anonymous_transaction_create_view(self):
         response = self.client.post(reverse('banking:transaction-create'))

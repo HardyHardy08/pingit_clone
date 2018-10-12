@@ -30,14 +30,10 @@ def invalid_account():
 
 
 class TransactionTest(TestCase):
-    """
-    Test default model manager functions for transaction model
-    """
+
     fixtures = ['bank_fixtures']
 
     def setUp(self):
-        # create_fixtures()
-        # account = Account.objects.create(**valid_account())
         self.valid_transaction = {
             'account_number': Account.objects.last(),
             'merchant_ID': Merchant.objects.get(merchant_ID="001"),
@@ -57,9 +53,6 @@ class TransactionTest(TestCase):
     def test_valid_create_transaction(self):
         new_transaction = Transaction.objects.create(**self.valid_transaction)
         self.assertIsInstance(new_transaction, Transaction)
-
-    def test_only_create_transaction_on_owned_accounts(self):
-        self.fail('create test!')
 
     def test_invalid_create_transaction(self):
         with self.assertRaises(ValidationError):
@@ -128,9 +121,7 @@ class TransactionTest(TestCase):
 
 
 class AccountTest(TestCase):
-    """
-    Test model manager functions for account model
-    """
+
     fixtures = ['bank_fixtures']
 
     def setUp(self):
