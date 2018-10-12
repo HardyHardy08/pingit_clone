@@ -1,3 +1,4 @@
+from collections import namedtuple
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from banking.models import (
@@ -58,7 +59,7 @@ class TransactionTest(TestCase):
         self.assertIsInstance(new_transaction, Transaction)
 
     def test_only_create_transaction_on_owned_accounts(self):
-        pass
+        self.fail('create test!')
 
     def test_invalid_create_transaction(self):
         with self.assertRaises(ValidationError):
@@ -69,7 +70,9 @@ class TransactionTest(TestCase):
         new_merchant = Merchant.objects.create(merchant_ID="002",
                                                merchant_desc="Zonk Bank")
         transaction.merchant_ID = new_merchant
+
         transaction.save()
+
         self.assertEqual(
             Transaction.objects.get(merchant_ID=new_merchant),
             transaction)
@@ -77,17 +80,19 @@ class TransactionTest(TestCase):
     def test_invalid_update_transaction(self):
         transaction = Transaction.objects.create(**self.valid_transaction)
         transaction.transaction_amount = "one hundred"
+
         with self.assertRaises(ValidationError):
             transaction.save()
 
     def test_delete_transaction(self):
         transaction = Transaction.objects.create(**self.valid_transaction)
+
         transaction.delete()
+
         with self.assertRaises(Transaction.DoesNotExist):
             Transaction.objects.get(pk=transaction.pk)
 
     def test_new_transaction_updates_related_account_balance(self):
-        # can be better
         customer = Customer.objects.last()
         starting_balance = 1000
         account = Account.objects.create_account(
@@ -98,23 +103,27 @@ class TransactionTest(TestCase):
             account_type_code="Savings",
             customer=customer,
             starting_balance=500)
+
         Transaction.objects.create_transfer_transaction(
             account_number=account,
             merchant_ID=Merchant.objects.first(),
             transaction_type="Transfer",
             transaction_amount=50,
             other_details="Lunch",
-            destination_number=other_account)
-        Transaction.objects.create_transfer_transaction(
+            destination_number=other_account),
+        transaction = Transaction.objects.create_transfer_transaction(
             account_number=account,
             merchant_ID=Merchant.objects.first(),
             transaction_type="Transfer",
             transaction_amount=50,
             other_details="Dinner",
             destination_number=other_account)
+
         self.assertEqual(other_account, Account.objects.latest())
         self.assertEqual(other_account, Transaction.objects.latest().account_number)
-        self.assertIn("Dinner", Transaction.objects.latest().other_details)
+        last_two_transactions = namedtuple('transfer', ['source', 'destination'])(
+            *reversed(Transaction.objects.all()[:2]))
+        self.assertEqual(transaction, last_two_transactions)
         self.assertNotEqual(account.current_balance, starting_balance)
 
 
@@ -140,7 +149,9 @@ class AccountTest(TestCase):
     def test_valid_update_account(self):
         account = Account.objects.create(**self.valid_account)
         account.current_balance = 50.0
+
         account.save()
+
         self.assertEqual(account.current_balance, 50.0)
 
     def test_invalid_update_account(self):
@@ -151,7 +162,9 @@ class AccountTest(TestCase):
 
     def test_delete_account(self):
         account = Account.objects.create(**self.valid_account)
+
         account.delete()
+
         with self.assertRaises(Account.DoesNotExist):
             Account.objects.get(pk=account.pk)
 

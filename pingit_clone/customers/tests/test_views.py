@@ -5,5 +5,5 @@ class CustomerViewsTest(TestCase):
     def setUp(self):
         pass
 
-    def test_views(self):
-        self.fail("Currently no views to test")
+    def test_redirect_to_home_page_after_success_signup(self):
+        pass

@@ -42,8 +42,7 @@ class Account(TimeStampedModel):
     def update_balance(self):
         queryset = self.transaction_set.filter(created__gte=self.modified).values(
             'transaction_amount', 'transaction_type')
-        outgoing = 0
-        incoming = 0
+        outgoing, incoming = 0, 0
         for transaction in queryset:
             if transaction['transaction_type'] == 1:
                 outgoing += transaction['transaction_amount']
