@@ -59,13 +59,6 @@ class TransactionCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'transaction/create.html'
     form_class = TransactionCreationForm
 
-    def post(self, request, *args, **kwargs):
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
