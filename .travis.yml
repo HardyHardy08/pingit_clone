@@ -1,13 +1,12 @@
 language: python
 python: '3.6'
 services: "-postgresql"
-env:
-  - DJANGO_SETTINGS_MODULE=pingit_clone.settings.testing
-  - SECRET_KEY="t@+pp-jo4e2^+hsb(vb+*1s^=@lsg$t7pgr(&^&fe4#_y@s%m9"
 before-install:
 - sudo apt-get update
 install:
 - pip install -r requirements/development.txt
 script:
+- export DJANGO_SETTINGS_MODULE=pingit_clone.settings.testing
+- export SECRET_KEY="t@+pp-jo4e2^+hsb(vb+*1s^=@lsg$t7pgr(&^&fe4#_y@s%m9"
 - cd pingit_clone/
 - pytest
