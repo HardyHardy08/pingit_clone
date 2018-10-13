@@ -1,13 +1,15 @@
 language: python
-python: "3.6"
-services:
-  -postgresql
+python: '3.6'
+services: "-postgresql"
 env:
-  -DJANGO_SETTINGS_MODULE=pingit_clone.settings.testing
+  matrix:
+  - "-DJANGO_SETTINGS_MODULE=pingit_clone.settings.testing"
+  global:
+    secure: OZ5fzJ5+yWNOtUFiokShxxeRz9aHpwbbqhk2Y3fvM2vvRC38weQ91d/tBk41fdIQEr6kc4ehkVYp2wWA2vF0WZNlYm6JyUxQY0swo424l0y1hRbAllpncDcAKUVZfIfcHvkc0i1QVfD/sxoHI+UyGzKqTrV2lPIUkGFu7B3FEk/H7xAUJ8YWLaoMhgKaigpXIsmIeRkC1Fwk3gmnnuPnzfuyA9NknuODT6tCMmc3K3FGwMG1P5Xnl+AQCvW3xEA3bhIhins3GoEY0qRyrRVunIOJDUFtfdNBza5/24XhOxdW+eSQKzbiH7d3UyPVnNT1G+hOa4LNH8tSK1XVdTbtYzxdGZtbdxlMJyPUoDqLqLu2MI32fqZXqvmiXYzzDk/F2CH/yGn4anuu0NxllAXUg1UpXI9UD6gDadn/WFEr2aN4ABAcIPA2BkC9KsAuavnpzNcXvejN/A9WEZCsQfbO08IjoVGedwWbTLOPYbhumxZOelMH9IblSuC5+HciZOD0G6xNtB/on5TabBes+Gpd8DBHqQJpwtAzJ52MRtG0uPCrih+zs3z8sBOuyBDPtjXpFBHTGeaDEJkxMDr961rw2MiNeIvjeMAmDOU79ypneYcNTvuQiQx2/DGnm20637AnrZVSoIUXKmjEAdOT3V51U3dFHK9n7uPuKElNA+tbUJM=
 before-install:
-  - sudo apt-get update
+- sudo apt-get update
 install:
-  - pip install -r requirements/development.txt
+- pip install -r requirements/development.txt
 script:
-  - cd pingit_clone/
-  - pytest
+- cd pingit_clone/
+- pytest
