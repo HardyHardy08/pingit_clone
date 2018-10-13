@@ -11,15 +11,24 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-
+from django.core.exceptions import ImproperlyConfigured
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
+
+def get_env_variable(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%-a9soi$l=ue_jwih)ib6yh9t4r&b6+l3xv^5^l&75i3ox8=9+'
+SECRET_KEY = get_env_variable('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,12 +89,6 @@ WSGI_APPLICATION = 'pingit_clone.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'boong_bank',
-        'USER': 'boong_teller',
-        'PASSWORD': '9bEoYmBgnyLnFA4P2Zn0dlNUNIu6wt2KddpHKv86gggXUhjoWyDstUvNSRVHhqg',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
     }
 }
 
@@ -129,7 +132,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 FIXTURE_DIRS = (
-    os.path.join(BASE_DIR, 'fixtures'),
+    os.path.join(os.path.dirname(BASE_DIR), 'fixtures'),
 )
 
 # Authentication settings

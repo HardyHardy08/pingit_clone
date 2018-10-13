@@ -1,0 +1,13 @@
+language: python
+
+services:
+  -postgresql
+
+env:
+  -DJANGO_SETTINGS_MODULE=pingit_clone.settings.testing
+
+install:
+  - pip install -r equirements/development.txt
+
+script:
+  - pytest
