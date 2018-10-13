@@ -11,6 +11,10 @@ script:
 - export DJANGO_SETTINGS_MODULE=pingit_clone.settings.testing
 - export SECRET_KEY="t@+pp-jo4e2^+hsb(vb+*1s^=@lsg$t7pgr(&^&fe4#_y@s%m9"
 - cd pingit_clone/
+- python manage.py makemigrations banking
+- python manage.py makemigrations customers
 - python manage.py makemigrations
+- python manage.py migrate banking
+- python manage.py migrate customers
 - python manage.py migrate
 - pytest
