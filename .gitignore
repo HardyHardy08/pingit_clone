@@ -12,6 +12,6 @@ pingit_clone/banking/tests/__pycache__/
 pingit_clone/pingit/__pycache__/
 pingit_clone/pingit/migrations/
 pingit_clone/.coverage
-pingit_clone/htmlcov/
+htmlcov/
 
 fixtures_update
