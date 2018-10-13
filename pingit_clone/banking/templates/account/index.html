@@ -4,6 +4,10 @@
 {% endblock title %}
 
 {% block content %}
+
+    {% if error_message %}
+        <h4 style="color:red;"> {{ error_message }} </h4>
+    {% endif %}
     {% for account in account_list %}
     <ul>
         <li><a href="{% url 'banking:account-detail' account.account_number %}">{{ account }}</a></li>

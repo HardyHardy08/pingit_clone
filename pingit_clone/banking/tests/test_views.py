@@ -162,6 +162,21 @@ class TransactionViewsTest(TestCase):
             data=unauthorized_transaction)
         self.assertContains(response, "That choice is not one of the available choices")
 
+    def test_fail_create_transaction_on_insufficient_funds(self):
+        self.client.login(**self.valid_user)
+        models.Account.objects.create_account(
+            account_type_code="Savings",
+            customer=Customer.objects.get(username=self.valid_user['username']),
+            starting_balance=50)
+        insufficient_funds_transaction = self.valid_transaction
+        insufficient_funds_transaction['transaction_amount'] = 100
+
+        response = self.client.post(reverse('banking:transaction-create'),
+                                    data=insufficient_funds_transaction)
+
+        self.assertContains(response, "Insufficient funds for requested transfer.",
+                            status_code=403)
+
     def test_anonymous_transaction_create_view(self):
         response = self.client.post(reverse('banking:transaction-create'))
         self.assertRedirects(response, '/?next=/banking/transaction/create')
