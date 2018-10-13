@@ -9,4 +9,5 @@ before-install:
 install:
   - pip install -r requirements/development.txt
 script:
+  - cd pingit_clone/
   - pytest
