@@ -52,6 +52,27 @@ class AccountViewsTest(TestCase):
             detail_view.context_data['account'].customer_id,
             Customer.objects.get(username=self.valid_user['username']))
 
+    def test_valid_account_detail_has_transactions(self):
+        self.client.login(**self.valid_user)
+        account_number = (
+            Customer.objects.get(username="rahmaratnasyani").account_set.first().account_number
+        )
+        response = self.client.get(reverse(
+            'banking:account-detail',
+            kwargs={'account_number': account_number}
+        ))
+        # crap workaround because of the way django and assertQuerysetEqual works --
+        # This is to remove quotes ( ' ) from the queryset because causing the exact same queryset
+        # to be listed differntly -- one in strings and one as objects.
+        # Will refactor if found better way to user assertQuerysetEqual.
+        quotes_qs = list(map(
+            repr,
+            models.Account.objects.get(account_number=account_number).transaction_set.all()
+        ))
+        self.assertQuerysetEqual(
+            response.context_data['transaction_list'],
+            quotes_qs)
+
     def test_unauthorized_account_detail_view(self):
         self.client.login(**self.valid_user)
         customer = Customer.objects.get(username=self.valid_user['username'])
@@ -65,8 +86,8 @@ class AccountViewsTest(TestCase):
     def test_valid_account_create_view(self):
         self.client.login(**self.valid_user)
         self.client.post(reverse('banking:account-create'),
-                         data={'account_type_code': 'Savings'})
-        self.assertEqual(models.Account.objects.last().customer_id,
+                         data={'account_type_code': '1'})
+        self.assertEqual(models.Account.objects.latest('created').customer_id,
                          Customer.objects.get(username=self.valid_user['username']))
 
     def test_unauthorized_account_create_view(self):
@@ -82,11 +103,15 @@ class TransactionViewsTest(TestCase):
             "username": "rahmaratnasyani",
             "password": "123123qweqwe"
         }
+        self.other_valid_user = {
+            "username": "Abdulhs",
+            "password": "qweqweasdasd"
+        }
         self.valid_transaction = {
-            'account_number': (Customer.objects.get(username=self.valid_user['username'])
-                               .account_set.first()),
-            'merchant_ID': models.Merchant.objects.first(),
-            'transaction_type': models.TransactionType.objects.first(),
+            'account_number':
+                Customer.objects.get(username=self.valid_user['username']).account_set.first(),
+            'merchant_ID': '1',
+            'transaction_type': '1',
             'transaction_amount': 50,
             'other_details': "This month's rent",
             'destination_number': models.Account.objects.last()
@@ -94,43 +119,68 @@ class TransactionViewsTest(TestCase):
         self.invalid_transaction = {
             'account_number': models.Account.objects.last(),
             'merchant_ID': models.Merchant.objects.first(),
-            'transaction_type': models.TransactionType.objects.first(),
+            'transaction_type': models.Transaction.objects.transaction_type('Transfer'),
             'transaction_amount': 'tree fiddy',
             'other_details': 'August/18 rent',
         }
 
     def test_valid_transaction_create_view(self):
         self.client.login(**self.valid_user)
-        response = self.client.post(reverse('banking:transaction-create'),
-                                    data=self.valid_transaction)
-        # self.client.post(reverse('banking:transaction-create'), data={})
-        print(response)
+        self.client.post(
+            reverse('banking:transaction-create'),
+            data=self.valid_transaction)
         last_two_transactions = models.Transaction.objects.all()[:2]
         self.assertEqual(
             [transaction.account_number for transaction in last_two_transactions],
-            [self.valid_transaction['account_number'],
-             self.valid_transaction['destination_number']])
+            [self.valid_transaction['destination_number'],
+             self.valid_transaction['account_number']])
 
-    def test_invalid_transaction_create_view(self):
-        # bullshitting
-        new_transaction = self.client.post(reverse('banking:transaction-create'))
-        self.assertEqual(new_transaction.status_code, 400)
-
-    def test_valid_transaction_list_view(self):
+    def test_transaction_create_view_only_show_user_owned_accounts(self):
         self.client.login(**self.valid_user)
-        transactions = self.client.get(reverse('banking:transactions-list'))
-        self.asserQuerysetEqual(transactions,
-                                models.Transaction.objects.filter(customer_id=self.client.user))
 
-    def test_invalid_transaction_list_view(self):
-        # how do i test this??
-        pass
+        response = self.client.post(reverse('banking:transaction-create'))
+        authorized_account_numbers = (
+            Customer.objects.get(username=self.valid_user['username']).account_set.all()
+        )
+        account_number_options = list(map(
+            repr, response.context_data['form'].fields['account_number'].queryset))
 
-    def test_valid_transaction_detail_view(self):
+        self.assertQuerysetEqual(authorized_account_numbers, account_number_options, ordered=False)
+
+    def test_only_create_transaction_on_owned_accounts(self):
+        """
+        Was going to implement a __account_owner_is_valid in view. But Django's form validation
+        catches the invalid data and simply returns a choice is not valid response.
+        """
         self.client.login(**self.valid_user)
-        transaction = self.client.get(reverse('banking:transaction-detail',
-                                              kwargs={}))
-        self.assertEqual(transaction.customer_id, self.client.user)
+        unauthorized_transaction = self.valid_transaction
+        unauthorized_transaction['account_number'] = (
+            Customer.objects.get(username=self.other_valid_user['username']).account_set.first(),
+        )
+        response = self.client.post(
+            reverse('banking:transaction-create'),
+            data=unauthorized_transaction)
+        self.assertContains(response, "That choice is not one of the available choices")
 
-    def test_invalid_transaction_detail_view(self):
-        pass
+    def test_fail_create_transaction_on_insufficient_funds(self):
+        self.client.login(**self.valid_user)
+        models.Account.objects.create_account(
+            account_type_code="Savings",
+            customer=Customer.objects.get(username=self.valid_user['username']),
+            starting_balance=50)
+        insufficient_funds_transaction = self.valid_transaction
+        insufficient_funds_transaction['transaction_amount'] = 100
+
+        response = self.client.post(reverse('banking:transaction-create'),
+                                    data=insufficient_funds_transaction)
+
+        self.assertContains(response, "Insufficient funds for requested transfer.",
+                            status_code=403)
+
+    def test_anonymous_transaction_create_view(self):
+        response = self.client.post(reverse('banking:transaction-create'))
+        self.assertRedirects(response, '/?next=/banking/transaction/create')
+
+    def test_unauthorized_transaction_create_view(self):
+        response = self.client.post(reverse('banking:transaction-create'))
+        self.assertRedirects(response, '/?next=/banking/transaction/create')

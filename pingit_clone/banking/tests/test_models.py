@@ -1,3 +1,4 @@
+from collections import namedtuple
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from banking.models import (
@@ -28,15 +29,11 @@ def invalid_account():
     }
 
 
-class DefaultTransactionTest(TestCase):
-    """
-    Test default model manager functions for transaction model
-    """
+class TransactionTest(TestCase):
+
     fixtures = ['bank_fixtures']
 
     def setUp(self):
-        # create_fixtures()
-        # account = Account.objects.create(**valid_account())
         self.valid_transaction = {
             'account_number': Account.objects.last(),
             'merchant_ID': Merchant.objects.get(merchant_ID="001"),
@@ -52,6 +49,7 @@ class DefaultTransactionTest(TestCase):
             'other_details': 'August/18 rent',
         }
 
+    # Default manager methods test
     def test_valid_create_transaction(self):
         new_transaction = Transaction.objects.create(**self.valid_transaction)
         self.assertIsInstance(new_transaction, Transaction)
@@ -65,7 +63,9 @@ class DefaultTransactionTest(TestCase):
         new_merchant = Merchant.objects.create(merchant_ID="002",
                                                merchant_desc="Zonk Bank")
         transaction.merchant_ID = new_merchant
+
         transaction.save()
+
         self.assertEqual(
             Transaction.objects.get(merchant_ID=new_merchant),
             transaction)
@@ -73,26 +73,55 @@ class DefaultTransactionTest(TestCase):
     def test_invalid_update_transaction(self):
         transaction = Transaction.objects.create(**self.valid_transaction)
         transaction.transaction_amount = "one hundred"
+
         with self.assertRaises(ValidationError):
             transaction.save()
 
     def test_delete_transaction(self):
         transaction = Transaction.objects.create(**self.valid_transaction)
+
         transaction.delete()
+
         with self.assertRaises(Transaction.DoesNotExist):
             Transaction.objects.get(pk=transaction.pk)
 
+    def test_new_transaction_updates_related_account_balance(self):
+        customer = Customer.objects.last()
+        starting_balance = 1000
+        account = Account.objects.create_account(
+            account_type_code="Savings",
+            customer=customer,
+            starting_balance=starting_balance)
+        other_account = Account.objects.create_account(
+            account_type_code="Savings",
+            customer=customer,
+            starting_balance=500)
 
-# class CustomTransactionTest(unittest):
-    """
-    Test custom model manager functions for transaction model
-    """
+        Transaction.objects.create_transfer_transaction(
+            account_number=account,
+            merchant_ID=Merchant.objects.first(),
+            transaction_type="Transfer",
+            transaction_amount=50,
+            other_details="Lunch",
+            destination_number=other_account),
+        transaction = Transaction.objects.create_transfer_transaction(
+            account_number=account,
+            merchant_ID=Merchant.objects.first(),
+            transaction_type="Transfer",
+            transaction_amount=50,
+            other_details="Dinner",
+            destination_number=other_account)
+
+        self.assertEqual(other_account, Account.objects.latest())
+        self.assertEqual(other_account, Transaction.objects.latest().account_number)
+        last_two_transactions = namedtuple('transfer', ['source', 'destination'])(
+            *reversed(Transaction.objects.all()[:2]))
+        self.assertEqual(transaction, last_two_transactions)
+        self.assertNotEqual(account.current_balance, starting_balance)
 
 
 class AccountTest(TestCase):
-    """
-    Test model manager functions for account model
-    """
+
     fixtures = ['bank_fixtures']
 
     def setUp(self):
@@ -111,7 +140,9 @@ class AccountTest(TestCase):
     def test_valid_update_account(self):
         account = Account.objects.create(**self.valid_account)
         account.current_balance = 50.0
+
         account.save()
+
         self.assertEqual(account.current_balance, 50.0)
 
     def test_invalid_update_account(self):
@@ -122,7 +153,9 @@ class AccountTest(TestCase):
 
     def test_delete_account(self):
         account = Account.objects.create(**self.valid_account)
+
         account.delete()
+
         with self.assertRaises(Account.DoesNotExist):
             Account.objects.get(pk=account.pk)
 

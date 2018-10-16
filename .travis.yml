@@ -1,0 +1,17 @@
+language: python
+python: '3.6'
+services: "-postgresql"
+before-install:
+- sudo apt-get update
+install:
+- pip install -r requirements/development.txt
+before_script:
+- psql -c 'create database travis_ci_test_db;' -U postgres
+script:
+- export DJANGO_SETTINGS_MODULE=pingit_clone.settings.testing
+- cd pingit_clone/
+- python manage.py makemigrations banking
+- python manage.py makemigrations customers
+- python manage.py migrate banking
+- python manage.py migrate customers
+- pytest

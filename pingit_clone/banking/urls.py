@@ -8,4 +8,5 @@ urlpatterns = [
         'account/details/<account_number>',
         views.AccountDetailView.as_view(),
         name='account-detail'),
+    path('transaction/create', views.TransactionCreateView.as_view(), name='transaction-create')
 ]

@@ -4,6 +4,10 @@
 {% endblock title %}
 
 {% block content %}
+
+    {% if error_message %}
+        <h4 style="color:red;"> {{ error_message }} </h4>
+    {% endif %}
     {% for account in account_list %}
     <ul>
         <li><a href="{% url 'banking:account-detail' account.account_number %}">{{ account }}</a></li>
@@ -16,7 +20,15 @@
         <p><a href="{% url 'banking:account-create' %}">Click here to create a new account</a></p>
 
     {% endfor %}
+
     {% if account_list %}
+        <p>
+            Would you like to make a transaction? <a href="{% url 'banking:transaction-create' %}">Click here</a>
+        </p>
+
         <p>Would you like to open a new account? <a href="{% url 'banking:account-create' %}">Click here</a></p>
+    
     {% endif %}
+
+
 {% endblock content %}

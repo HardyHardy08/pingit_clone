@@ -6,14 +6,23 @@
 
 {% block content %}
     <h2>{{ user.username }}'s Account</h2>
-    <p>{{ account.account_number }}</p>
-    <p>{{ account.current_balance }}</p>
-    <p>{{ account.account_type_code }}</p>
-    <p>{{ account.account_status_code }}</p>
+    <p>Account number : {{ account.account_number }}</p>
+    <p>Current balance : {{ account.current_balance }}</p>
+    <p>Account type : {{ account.account_type_code }}</p>
+    <p>Past Transactions:</p>
+    {% for transaction in transaction_list %}
+    <ul>
+    <li>
+        {{ transaction.created }} <br> 
+        {{ transaction.transaction_type }}: {{ transaction.transaction_amount }} -- {{ transaction.other_details.msg }}
+    </li><br>    
+    </ul>
+    {% empty %}
+        <p>This account has no transactions.</p>
+    {% endfor %}
 
     <br>
     <br>
     <br>
-
     <p><a href="{% url 'banking:account-list' %}">Accounts</a></p>
 {% endblock content %}

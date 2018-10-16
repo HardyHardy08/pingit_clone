@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Transaction
+{% endblock title %}
+
+{% block content %}
+    <h2>Create Transaction</h2>
+    <p>
+        Please fill your transaction details
+    </p>
+    <form method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit'>Create Transaction</button>
+    </form>
+
+    <p><a href="{% url 'banking:account-list' %}">Cancel</a></p>
+{% endblock content %}

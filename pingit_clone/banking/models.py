@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from model_utils.models import TimeStampedModel
 
@@ -38,8 +39,23 @@ class Account(TimeStampedModel):
 
     objects = managers.AccountManager()
 
+    def update_balance(self):
+        queryset = self.transaction_set.filter(created__gte=self.modified).values(
+            'transaction_amount', 'transaction_type')
+        outgoing, incoming = 0, 0
+        for transaction in queryset:
+            if transaction['transaction_type'] == 1:
+                outgoing += transaction['transaction_amount']
+            if transaction['transaction_type'] == 2:
+                incoming += transaction['transaction_amount']
+        self.current_balance = self.current_balance - outgoing + incoming
+        self.save()
+
     def __str__(self):
         return self.account_number
+
+    class Meta:
+        get_latest_by = 'created'
 
 
 class TransactionType(models.Model):
@@ -54,11 +70,16 @@ class Transaction(TimeStampedModel):
     merchant_ID = models.ForeignKey(Merchant, on_delete=models.PROTECT)
     transaction_type = models.ForeignKey(TransactionType, on_delete=models.PROTECT)
 
-    transaction_amount = models.DecimalField(max_digits=15, decimal_places=2,
-                                             default=0.0, blank=False)
+    transaction_amount = models.DecimalField(max_digits=15, decimal_places=2, blank=False,
+                                             validators=[MinValueValidator(0.00)])
     other_details = models.CharField(max_length=140)
 
     objects = managers.TransactionManager()
 
     def __str__(self):
-        return self.transaction_type + " : " + self.transaction_amount
+        return (self.account_number.account_number +
+                " : " + self.transaction_type.transaction_type_desc)
+
+    class Meta:
+        get_latest_by = 'created'
+        ordering = ['-created']
