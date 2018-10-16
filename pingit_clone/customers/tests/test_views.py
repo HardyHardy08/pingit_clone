@@ -12,7 +12,7 @@ class CustomerViewsTest(TestCase):
 
     def test_after_successful_signup_redirect_to_home_page_and_login(self):
         data = valid_customer_data()
-        data['identification_type'] = "1"
+        data['identification_type'] = data['identification_type'].pk
         data['password1'] = "123qwerty098"
         data['password2'] = "123qwerty098"
 
