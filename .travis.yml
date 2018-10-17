@@ -25,6 +25,8 @@ after_success:
 - cd ../
 - chmod 600 .travis/push_certificate.pem
 - ssh-add .travis/push_certificate.pem
+- ls ~/.ssh
+- echo -e "Host 172.104.61.45\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - git remote add deploy pingit@172.104.61.45:/webapps/repo/pingit_clone
 - git checkout master
 - git push deploy
