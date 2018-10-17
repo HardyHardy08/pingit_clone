@@ -6,7 +6,7 @@ python: '3.6'
 services: "-postgresql"
 before_install:
 - openssl aes-256-cbc -K $encrypted_8fb3ffa45001_key -iv $encrypted_8fb3ffa45001_iv
-  -in push_certificate.pem.enc -out push_certificate.pem -d
+  -in .travis/push_certificate.pem.enc -out .travis/push_certificate.pem -d
 - sudo apt-get update
 install:
 - pip install -r requirements/development.txt
