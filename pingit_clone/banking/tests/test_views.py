@@ -191,3 +191,15 @@ class TransactionViewsTest(TestCase):
     def test_unauthorized_transaction_create_view(self):
         response = self.client.post(reverse('banking:transaction-create'))
         self.assertRedirects(response, '/?next=/banking/transaction/create')
+
+    def test_transaction_api_create_valid_request(self):
+        self.fail('create test!')
+
+    def test_transaction_api_fail_bad_request(self):
+        self.fail('create test!')
+
+    def test_transaction_api_create_on_authorized_requester(self):
+        self.fail('create test!')
+
+    def test_transaction_api_reject_unauthorized_requesters(self):
+        self.fail('create test!')
