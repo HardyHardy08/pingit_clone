@@ -2,6 +2,8 @@ from .base import *
 
 DEBUG = False
 
+ALLOWED_HOSTS = ['172.104.61.45', 'boongbank.com', ]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
