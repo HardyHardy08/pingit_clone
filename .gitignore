@@ -1,7 +1,10 @@
 *.pyc
 __pycache__
-pingit_clone/pingit_clone/__pycache__/
-pingit_clone/pingit_clone/migrations/
+
+SECRET_KEY
+push_certificate.pem
+push_certificate.pub
+
 pingit_clone/__pycache__/
 pingit_clone/customers/__pycache__/
 pingit_clone/customers/migrations/
