@@ -1,7 +1,12 @@
+branches:
+  only:
+  - master
 language: python
 python: '3.6'
 services: "-postgresql"
-before-install:
+before_install:
+- openssl aes-256-cbc -K $encrypted_8fb3ffa45001_key -iv $encrypted_8fb3ffa45001_iv
+  -in .travis/push_certificate.pem.enc -out .travis/push_certificate.pem -d
 - sudo apt-get update
 install:
 - pip install -r requirements/development.txt
@@ -15,3 +20,13 @@ script:
 - python manage.py migrate banking
 - python manage.py migrate customers
 - pytest
+after_success:
+- eval "$(ssh-agent -s)"
+- cd ../
+- chmod 600 .travis/push_certificate.pem
+- ssh-add .travis/push_certificate.pem
+- ls ~/.ssh
+- echo -e "Host 172.104.61.45\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- git remote add deploy pingit@172.104.61.45:/webapps/repo/pingit_clone
+- git checkout master
+- git push deploy
