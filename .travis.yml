@@ -26,4 +26,6 @@ after_success:
 - chmod 600 .travis/push_certificate.pem
 - ssh-add .travis/push_certificate.pem
 - git remote add deploy pingit@172.104.61.45:/webapps/repo/pingit_clone
-- git push deploy
+- git status
+- git branch
+- git log
