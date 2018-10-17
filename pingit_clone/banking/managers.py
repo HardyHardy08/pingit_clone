@@ -43,7 +43,7 @@ class AccountManager(models.Manager):
         return AccountStatus.objects.get(account_status_desc=account_status)
 
     def _account_number_generator(self):
-        return "001-" + str(random.random() * 100000)[:5]
+        return "001-" + str(random.random())[-5:]
 
     def create_account(self, account_type_code, customer, starting_balance, other_details=''):
         new_account = self.model(
