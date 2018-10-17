@@ -147,6 +147,13 @@ class TransactionViewsTest(TestCase):
 
         self.assertQuerysetEqual(authorized_account_numbers, account_number_options, ordered=False)
 
+    def test_transaction_create_view_only_show_transfer(self):
+        self.client.login(**self.valid_user)
+
+        response = self.client.get(reverse('banking:transaction-create'))
+
+        self.assertNotContains(response, "Deposit")
+
     def test_only_create_transaction_on_owned_accounts(self):
         """
         Was going to implement a __account_owner_is_valid in view. But Django's form validation
