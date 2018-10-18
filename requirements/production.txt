@@ -1,6 +1,13 @@
+cov-core==1.15.0
+coverage==4.5.1
 Django==2.1.2
 django-model-utils==3.1.2
-gunicorn==19.9.0
+djangorestframework==3.8.2
+more-itertools==4.3.0
+pip-autoremove==0.9.1
+pluggy==0.7.1
 psycopg2-binary==2.7.5
+py==1.7.0
+Pygments==2.2.0
 pytz==2018.5
-setproctitle==1.1.10
+six==1.11.0
