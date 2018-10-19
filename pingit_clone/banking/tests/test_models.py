@@ -86,6 +86,7 @@ class TransactionTest(TestCase):
             Transaction.objects.get(pk=transaction.pk)
 
     def test_new_transaction_updates_related_account_balance(self):
+        # should i make a test to make sure that the balances are updated correctly?
         customer = Customer.objects.last()
         starting_balance = 1000
         account = Account.objects.create_account(
