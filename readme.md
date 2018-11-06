@@ -34,7 +34,7 @@ and install the requirements
 developer@machine:~/$ pip install -r pingit_clone/requirements/development.txt 
 ```
 
-you should be good to go!
+you should be good to go! ... But, the databases will not have been made yet for the project to run. So go do a `makemigrations` and `migrate` of the apps just to make sure.
 
 To get started and look around the functionalities of the project, run a local django server.
 
