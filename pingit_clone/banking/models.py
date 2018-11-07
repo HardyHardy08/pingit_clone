@@ -39,16 +39,20 @@ class Account(TimeStampedModel):
 
     objects = managers.AccountManager()
 
-    def update_balance(self):
+    def _calculate_current_balance(self):
         queryset = self.transaction_set.filter(created__gte=self.modified).values(
             'transaction_amount', 'transaction_type')
+        transfer_transaction, deposit_transaction = 1, 2
         outgoing, incoming = 0, 0
         for transaction in queryset:
-            if transaction['transaction_type'] == 1:
+            if transaction['transaction_type'] == transfer_transaction:
                 outgoing += transaction['transaction_amount']
-            if transaction['transaction_type'] == 2:
+            if transaction['transaction_type'] == deposit_transaction:
                 incoming += transaction['transaction_amount']
-        self.current_balance = self.current_balance - outgoing + incoming
+        return self.current_balance - outgoing + incoming
+
+    def _update_balance(self):
+        self.current_balance = self._calculate_current_balance()
         self.save()
 
     def __str__(self):

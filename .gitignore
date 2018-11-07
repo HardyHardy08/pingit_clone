@@ -1,19 +1,10 @@
 *.pyc
-__pycache__
+**/__pycache__
 
 SECRET_KEY
 push_certificate.pem
 push_certificate.pub
 
-pingit_clone/__pycache__/
-pingit_clone/customers/__pycache__/
-pingit_clone/customers/migrations/
-pingit_clone/customers/tests/__pycache__/
-pingit_clone/banking/__pycache__/
-pingit_clone/banking/migrations/
-pingit_clone/banking/tests/__pycache__/
-pingit_clone/pingit/__pycache__/
-pingit_clone/pingit/migrations/
 pingit_clone/.coverage
 htmlcov/
 
