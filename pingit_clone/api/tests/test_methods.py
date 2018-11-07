@@ -22,3 +22,27 @@ class AccountDetailTests(APITestCase):
         )
         self.assertEqual(json.loads(response.content), serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_successful_invalid_get_account_return_404(self):
+        response = self.client.get(
+            reverse('api:account-detail',
+                    kwargs={'account_number': 'asdasdasd'})
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class TransactionCreateTests(APITestCase):
+    fixtures = ['bank_fixtures']
+
+    def test_transaction_api_create_valid_request(self):
+        self.fail('create test!')
+
+    def test_transaction_api_fail_bad_request(self):
+        self.fail('create test!')
+
+    def test_transaction_api_create_on_authorized_requester(self):
+        self.fail('create test!')
+
+    def test_transaction_api_reject_unauthorized_requesters(self):
+        self.fail('create test!')
