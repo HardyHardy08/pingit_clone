@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'banking.apps.BankingConfig',
     'customers.apps.CustomersConfig',
     # 'pingit.apps.PingitConfig',
+
+    # Third-party Apps
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
