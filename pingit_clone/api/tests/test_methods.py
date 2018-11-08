@@ -1,6 +1,6 @@
 import json
 from rest_framework import status
-from banking.models import Account
+from banking.models import Account, Transaction
 from banking.serializers import AccountSerializer
 from customers.models import Customer
 from rest_framework.test import APITestCase
@@ -84,14 +84,46 @@ class AccountListTests(APITestCase):
 class TransactionCreateTests(APITestCase):
     fixtures = ['bank_fixtures']
 
-    def test_transaction_api_create_valid_request(self):
-        self.fail('create test!')
+    def setUp(self):
+        self.valid_user = {
+            "username": "rahmaratnasyani",
+            "password": "123123qweqwe"
+        }
+        self.valid_transaction = {
+            'account_number': '001-62383',
+            'merchant_ID': '1',
+            'transaction_type': '1',
+            'transaction_amount': 50,
+            'other_details': "This month's rent",
+            'destination_number': '001-14550'
+        }
+        self.invalid_transaction = {
+            'account_number': '001-14550',
+            'transaction_type': '1',
+            'transaction_amount': 'tree fiddy',
+            'other_details': 'August/18 rent',
+            'destination_number': 'asd123123'
+        }
 
-    def test_transaction_api_fail_bad_request(self):
-        self.fail('create test!')
+    def test_transaction_create_valid_request(self):
+        self.client.login(**self.valid_user)
+        self.client.post(
+            reverse('api:transaction-create'),
+            data=self.valid_transaction)
+        last_two_transactions = Transaction.objects.all()[:2]
+        self.assertEqual(
+            [str(transaction.account_number) for transaction in last_two_transactions],
+            [self.valid_transaction['destination_number'],
+             self.valid_transaction['account_number']])
 
-    def test_transaction_api_create_on_authorized_requester(self):
-        self.fail('create test!')
+    def test_transaction_fail_invalid_request(self):
+        self.client.login(**self.valid_user)
+        response = self.client.post(
+            reverse('api:transaction-create'),
+            data=self.invalid_transaction)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    # def test_transaction_create_only_on_authorized_requester(self):
+    #     self.fail('create test!')
 
-    def test_transaction_api_reject_unauthorized_requesters(self):
-        self.fail('create test!')
+    # def test_transaction_api_reject_unauthorized_requesters(self):
+    #     self.fail('create test!')
